@@ -19,7 +19,7 @@ $('#network-graph').lbNetworkGraph()
 Templates
 ---------
 any JSON fields you want to show need to be wrapped in [%%] in the template, as below
-     '<h2>[%title%]</h2>'
+    '<h2>[%title%]</h2>'
 
 This way you can add any fields you wish to to the JSON.
 The only _required_ fields is the id for the child nodes - for now at least
