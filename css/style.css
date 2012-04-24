@@ -108,7 +108,7 @@ h4 {
     border      : solid 1px #ccc;
     margin      : 100px auto 0;
     padding     : 20px 20px 30px;
-    width       : 740px;
+    width       : 90%;
 }
 
 #network {
@@ -118,7 +118,7 @@ h4 {
     height      : 500px;
     margin      : 20px auto 0;
     position    : relative;
-    width       : 660px;
+    width       : 90%;
 }
 
 hr {
