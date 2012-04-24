@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Canvas Collab</title>
+        <link rel="stylesheet" href="./css/style.css" type="text/css" />
+        <link rel="stylesheet" href="./css/lb-collab.css" type="text/css" />
+    </head>
+    <body>
+        <div id="network"></div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            !window.jQuery && document.write('<script src="./js/jquery-1.7.2.min.js"><\/script>');
+        </script>
+
+        <!-- this custom query-ui only contains the draggable and easing functions -->
+        <script src="./js/jquery-ui-1.8.18/jquery-ui-1.8.18.custom.min.js"></script>
+
+        <!-- great little plugin for touch devices ( to allow jquery ui dragging in them -->
+        <script src="./js/jquery.ui.touch-punch.min.js"></script>
+        
+        <!-- we rely on RaphaelJS to draw the lines between nodes -->
+        <script src="./js/raphael-min.js"></script>
+
+        <!-- Plugin -->
+        <script src="./js/jquery.collabmap.js"></script>
+
+        <script type="text/javascript">
+            $('#network').lbNetworkGraph();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,91 @@
+.network-node {
+    background  : #ffaf4b; /* Old browsers */
+    background  : -moz-linear-gradient(top,  #ffaf4b 0%, #ff920a 100%); /* FF3.6+ */
+    background  : -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffaf4b), color-stop(100%,#ff920a)); /* Chrome,Safari4+ */
+    background  : -webkit-linear-gradient(top,  #ffaf4b 0%,#ff920a 100%); /* Chrome10+,Safari5.1+ */
+    background  : -o-linear-gradient(top,  #ffaf4b 0%,#ff920a 100%); /* Opera 11.10+ */
+    background  : -ms-linear-gradient(top,  #ffaf4b 0%,#ff920a 100%); /* IE10+ */
+    background  : linear-gradient(top,  #ffaf4b 0%,#ff920a 100%); /* W3C */
+    filter      : progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=0 ); /* IE6-9 */
+    border      : solid 0.4em #fff;
+    -webkit-border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    border-radius: 0.8em;
+    cursor      : pointer;
+    height      : 8em;
+    margin      : -5em 0 0 -8em;
+    padding     : 0.5em 1em;
+    position    : absolute;
+    width       : 14em;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.lb-node-hover {
+    border-color    : #bbb;
+    z-index     : 10;
+}
+
+.theme {
+    background  : rgb(247,251,252); /* Old browsers */
+    background  : -moz-linear-gradient(-45deg,  rgba(247,251,252,1) 0%, rgba(217,237,242,1) 40%, rgba(173,217,228,1) 100%); /* FF3.6+ */
+    background  : -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(247,251,252,1)), color-stop(40%,rgba(217,237,242,1)), color-stop(100%,rgba(173,217,228,1))); /* Chrome,Safari4+ */
+    background  : -webkit-linear-gradient(-45deg,  rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* Chrome10+,Safari5.1+ */
+    background  : -o-linear-gradient(-45deg,  rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* Opera 11.10+ */
+    background  : -ms-linear-gradient(-45deg,  rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* IE10+ */
+    background  : linear-gradient(-45deg,  rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* W3C */
+    filter      : progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7fbfc', endColorstr='#add9e4',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    margin      : -5em 0 0 -5em;
+    width       : 8em;
+}
+
+.trailing {
+    border-color : #ddd;
+}
+
+.collab-map-zoom-in, .collab-map-zoom-out {
+    background  : #369;
+    bottom      : 20px;
+    color       : #fff;
+    cursor      : pointer;
+    font-size   : 20px;
+    line-height : 16px;
+    height      : 20px;
+    position    : absolute;
+    right       : 20px;
+    text-align  : center;
+    width       : 20px;
+}
+
+.collab-map-zoom-in {
+    right       : 50px;
+}
+
+/* */
+.grab-cursor {
+  cursor        : hand;
+  cursor        : grab;
+  cursor        : -moz-grab;
+  cursor        : -webkit-grab;
+}
+
+/*
+.grab-cursor {
+  cursor: url(https://mail.google.com/mail/images/2/openhand.cur), default !important;
+}
+*/
+.grabbing-cursor {
+  cursor        : grabbing;
+  cursor        : -moz-grabbing;
+  cursor        : -webkit-grabbing;
+}
+/*
+.grabbing-cursor {
+  cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), default !important;
+}
+*/

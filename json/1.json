@@ -1,0 +1,21 @@
+{
+    "title" : "First Title",
+    "lineColour" : "#fff",
+    "text" : "this is some text",
+    "children" : [{
+                    "id" : "child-1",
+                    "title" : "I'm different",
+                    "lineColour" : "#fff",
+                    "type" : "theme"
+                },
+                {
+                    "id" : "child-2",
+                    "title" : "Child 2",
+                    "text" : "this is some text too",
+                    "lineColour" : "#fff"
+                }, {
+                    "id" : "child-3",
+                    "title" : "Child 3",
+                    "lineColour" : "#fff"
+                }]
+}
