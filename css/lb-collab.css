@@ -1,24 +1,8 @@
-.starting-node,
 .network-node {
-    background  : #ffaf4b; /* Old browsers */
-    background  : -moz-linear-gradient(top,  #ffaf4b 0%, #ff920a 100%); /* FF3.6+ */
-    background  : -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffaf4b), color-stop(100%,#ff920a)); /* Chrome,Safari4+ */
-    background  : -webkit-linear-gradient(top,  #ffaf4b 0%,#ff920a 100%); /* Chrome10+,Safari5.1+ */
-    background  : -o-linear-gradient(top,  #ffaf4b 0%,#ff920a 100%); /* Opera 11.10+ */
-    background  : -ms-linear-gradient(top,  #ffaf4b 0%,#ff920a 100%); /* IE10+ */
-    background  : linear-gradient(top,  #ffaf4b 0%,#ff920a 100%); /* W3C */
-    filter      : progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=0 ); /* IE6-9 */
-    border      : solid 0.4em #fff;
-    -webkit-border-radius: 0.8em;
-    -moz-border-radius: 0.8em;
-    border-radius: 0.8em;
     cursor      : pointer;
-    margin      : -5em 0 0 -8em;
-    max-height  : 10em;
-    overflow    : hidden;
-    padding     : 0.5em 1em;
+    height      : 10em;
     position    : absolute;
-    width       : 14em;
+    width       : 2.5em;
 
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -28,41 +12,28 @@
     user-select: none;
 }
 
-.starting-node {
-    background: rgb(180,227,145); /* Old browsers */
-    background: -moz-linear-gradient(top,  rgba(180,227,145,1) 0%, rgba(97,196,25,1) 50%, rgba(180,227,145,1) 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(180,227,145,1)), color-stop(50%,rgba(97,196,25,1)), color-stop(100%,rgba(180,227,145,1))); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  rgba(180,227,145,1) 0%,rgba(97,196,25,1) 50%,rgba(180,227,145,1) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top,  rgba(180,227,145,1) 0%,rgba(97,196,25,1) 50%,rgba(180,227,145,1) 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top,  rgba(180,227,145,1) 0%,rgba(97,196,25,1) 50%,rgba(180,227,145,1) 100%); /* IE10+ */
-    background: linear-gradient(top,  rgba(180,227,145,1) 0%,rgba(97,196,25,1) 50%,rgba(180,227,145,1) 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', endColorstr='#b4e391',GradientType=0 ); /* IE6-9 */
-    width       : 12em;
+.network-node img,
+.collab-selected .children-nodes .network-node img,
+.lb-trailing-node .children-nodes .network-node img {
+    height      : 10em;
+    margin      : -5em 0 0 -3em;
+    position    : absolute;
 }
-
-.lb-node-hover {
-    border-color    : #bbb;
-    z-index     : 10;
-}
-
-.theme {
-    background  : rgb(247,251,252); /* Old browsers */
-    background  : -moz-linear-gradient(-45deg,  rgba(247,251,252,1) 0%, rgba(217,237,242,1) 40%, rgba(173,217,228,1) 100%); /* FF3.6+ */
-    background  : -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(247,251,252,1)), color-stop(40%,rgba(217,237,242,1)), color-stop(100%,rgba(173,217,228,1))); /* Chrome,Safari4+ */
-    background  : -webkit-linear-gradient(-45deg,  rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* Chrome10+,Safari5.1+ */
-    background  : -o-linear-gradient(-45deg,  rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* Opera 11.10+ */
-    background  : -ms-linear-gradient(-45deg,  rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* IE10+ */
-    background  : linear-gradient(-45deg,  rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* W3C */
-    filter      : progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7fbfc', endColorstr='#add9e4',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-    margin      : -5em 0 0 -5em;
-    width       : 8em;
+.collab-selected .network-node img,
+.lb-trailing-node .collab-selected .network-node img {
+    height      : 18em;
+    margin      : -9em 0 0 -6em;
 }
 
 .trailing {
-    border-color : #ddd;
+
 }
 
-.starting-node h4,
+.lb-node-hover {
+    border : solid 1px #f00;
+    z-index     : 10;
+}
+
 .network-node h4 {
     color       : #333;
 }

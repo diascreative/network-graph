@@ -134,7 +134,7 @@ h4 {
     background: radial-gradient(center, ellipse cover,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
     border      : solid 1px #ccc;
-    font-size   : 14px;
+    font-size   : 10px;
     height      : 100%;
     position    : fixed;
     width       : 100%;}
