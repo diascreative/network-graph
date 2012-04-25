@@ -36,11 +36,15 @@
         defaults = {
             templates : {
                     'default' : '<div class="network-node">' +
-                                    '<h2>[%title%]</h2>' +
-                                    '<p>[%text%]</p>' +
+                                    '<h4>[%title%]</h4>' +
+                                    '<p>[%description%]</p>' +
                                  '</div>',
                     'theme' :  '<div class="network-node theme">' + // to use a different template add a .type field to the json object
-                                    '<h2>[%title%]</h2>' +
+                                    '<h4>[%title%]</h4>' +
+                                 '</div>',
+                    'centralNode' : '<div class="starting-node">' +
+                                    '<h4>[%title%]</h4>' +
+                                    '<p>[%text%]</p>' +
                                  '</div>'
                     },
             initialNodeID   : '1',
@@ -51,6 +55,7 @@
             distanceIncrement : 4,      // distance increment from parent node when node is selected
             moveTime        : 1000,     // animation time when a node is selected,
             angleLimit      : 180,
+            lineColour      : '#fff',
             className       : {
                     'node'      : 'lb-network-node',
                     'nodeHover' : 'lb-node-hover',
@@ -184,6 +189,33 @@
                         $(this).addClass(collabMap.options.className.nodeHover);
                     }
                 })(this)
+            );
+
+            this.nodes.on('change', 'select',
+                (function(collabMap) {
+                    return function() {
+                        var $this = $(this);
+                        var $node = $this.closest('.lb-network-node');
+                        var hadChildren = $node.data('children') ? $node.data('children').length : false;
+
+                        $node.data('id', $this.val())
+                             .removeData('children')
+                             .removeClass(collabMap.options.className.trailing);
+
+                        if( $this.attr('data-colour') )
+                            collabMap.options.lineColour = $this.attr('data-colour');
+
+                        if( $this.attr('data-url') )
+                            collabMap.options.jsonURL = $this.attr('data-url');
+
+                        if( hadChildren ) {
+                            collabMap._removeChildren($node);
+                            setTimeout(function() { collabMap._getChildren($node); }, 1000);
+                        } else {
+                            collabMap._getChildren($node);
+                        }
+                    }
+                })(this)    
             );
 
             // add our initial node
@@ -365,11 +397,17 @@
               
                     if( node.type && template.options.templates[node.type] )
                         templatetype = node.type;
-        
-                    var newNode = $(collabMap._replace(collabMap.options.templates[templatetype], node))
+
+                    // we wrap the nodes in a new div so that we can append the child nodes
+                    // next to the node and let their encapsulation take care of them
+                    // moving together around the screen without affecting the HTML or CSS
+                    // for the node ( eg. overflow : hidden )
+                    var newNode = $('<div></div>')
+                                .append($(collabMap._replace(collabMap.options.templates[templatetype], node)).addClass('lb-node'))
                                 .appendTo(collabMap.nodes)
                                 .attr({ id : collabMap.options.nodeId + collabMap.options.initialNodeID })
-                                .addClass(collabMap.options.className.node);
+                                .addClass(collabMap.options.className.node)
+                                .css({ position : 'absolute' });
         
                     var centerScreen = collabMap._centerScreen();
                     var centerNode = collabMap._centerPos();
@@ -483,12 +521,14 @@
                     
                     if( children[i].type && templates[children[i].type] )
                         templatetype = children[i].type;
-        
+
                     var TMPLT = templates[templatetype];
 
-                    var $node = $($collabMap._replace(TMPLT, children[i]))
+                    var $node = $('<div></div>')
+                                .append($($collabMap._replace(TMPLT, children[i])).addClass('lb-node'))
                                 .appendTo($container)
-                                .addClass($collabMap.options.className.node);
+                                .addClass($collabMap.options.className.node)
+                                .css({ position : 'absolute' });
 
                     $node.attr({ id : nodeId + children[i].uid })
                          .css({ left : 0, top : 0 });
@@ -507,7 +547,7 @@
 
                     $node.data({ parent : $parent,
                                  angleFromParent : angle,
-                                 lineColour :  children[i].lineColour || '#fff',
+                                 lineColour :  children[i].lineColour || $collabMap.options.lineColour,
                                 'id' : children[i].uid
                               });
 
@@ -545,12 +585,14 @@
 
                 // since the nodes' heights and widths vary,
                 // lets make the distance the same from the border of the node
-                var nWidth  = $node.outerWidth()/2;
-                var nHeight = $node.outerHeight()/2;
+                var node = $node.find('.lb-node');
+                var nWidth  = node.outerWidth()/2;
+                var nHeight = node.outerHeight()/2;
 
                 // parent dimensions                
-                var pWidth = $node.data('parent').outerWidth()/2;
-                var pHeight = $node.data('parent').outerHeight()/2;
+                var parentDimension = $node.data('parent').find('.lb-node');
+                var pWidth  = parentDimension.outerWidth()/2;
+                var pHeight = parentDimension.outerHeight()/2;
 
                 var extraD  = 0;
                 
