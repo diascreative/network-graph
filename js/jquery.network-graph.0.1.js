@@ -363,7 +363,7 @@
                 success : ( function(collabMap) { return function(node) {
                     var templatetype = 'default';
               
-                    if( node.type && this.options.templates[node.type] )
+                    if( node.type && template.options.templates[node.type] )
                         templatetype = node.type;
         
                     var newNode = $(collabMap._replace(collabMap.options.templates[templatetype], node))
