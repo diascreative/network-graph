@@ -195,8 +195,16 @@
                 (function(collabMap) {
                     return function() {
                         var $this = $(this);
+                        var $siblings = $this.siblings('select');
+                        
                         var $node = $this.closest('.lb-network-node');
                         var hadChildren = $node.data('children') ? $node.data('children').length : false;
+
+                        if( $this.val() === '1' ) {
+                            $siblings.removeAttr('disabled');
+                        } else {
+                            $siblings.attr('disabled', 'disabled');
+                        }
 
                         $node.data('id', $this.val())
                              .removeData('children')
