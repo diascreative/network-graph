@@ -68,6 +68,27 @@ input:valid, textarea:valid { background-color: #fff; }
 table { border-collapse: collapse; border-spacing: 0; }
 td { vertical-align: top; }
 
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+ 
+.clearfix {
+	display: inline-block;
+}
+ 
+html[xmlns] .clearfix {
+	display: block;
+}
+ 
+* html .clearfix {
+	height: 1%;
+}
+
 .chromeframe { margin: 0.2em 0; background: #ccc; color: black; padding: 0.2em 0; }
 
 /* collab map */
@@ -103,22 +124,20 @@ h4 {
     font-size   : 14px;
 }
 
-#container {
-    background  : #fff;
-    border      : solid 1px #ccc;
-    margin      : 100px auto 0;
-    padding     : 20px 20px 30px;
-    width       : 90%;
-}
-
 #network {
-    background  : #333;
+    background: rgb(238,238,238); /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover,  rgba(238,238,238,1) 0%, rgba(204,204,204,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(204,204,204,1))); /* Chrome,Safari4+ */
+    background: -webkit-radial-gradient(center, ellipse cover,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-radial-gradient(center, ellipse cover,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* Opera 12+ */
+    background: -ms-radial-gradient(center, ellipse cover,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* IE10+ */
+    background: radial-gradient(center, ellipse cover,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
     border      : solid 1px #ccc;
     font-size   : 14px;
-    height      : 500px;
-    margin      : 20px auto 0;
-    position    : relative;
-    width       : 90%;
+    height      : 100%;
+    position    : fixed;
+    width       : 100%;
 }
 
 hr {

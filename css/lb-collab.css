@@ -1,5 +1,5 @@
 .starting-node,
-.network-node {
+.network-node.collab-selected {
     background  : #ffaf4b; /* Old browsers */
     background  : -moz-linear-gradient(top,  #ffaf4b 0%, #ff920a 100%); /* FF3.6+ */
     background  : -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffaf4b), color-stop(100%,#ff920a)); /* Chrome,Safari4+ */
@@ -38,6 +38,60 @@
     background: linear-gradient(top,  rgba(180,227,145,1) 0%,rgba(97,196,25,1) 50%,rgba(180,227,145,1) 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', endColorstr='#b4e391',GradientType=0 ); /* IE6-9 */
     width       : 12em;
+}
+
+.network-node h4,
+.network-node p,
+.lb-trailing-node.collab-selected .children-nodes .network-node h4,
+.lb-trailing-node.collab-selected .children-nodes .network-node p {
+    display  : none;
+}
+
+.network-node,
+.collab-selected .children-nodes .network-node,
+.lb-trailing-node .children-nodes .network-node {
+    height      : 10em;
+    min-width   : 2.5em;
+}
+
+.network-node img,
+.collab-selected .children-nodes .network-node img,
+.lb-trailing-node .children-nodes .network-node img {
+    height      : 10em;
+    margin      : -5em -3em 0;
+    position    : absolute;
+}
+
+.collab-selected .network-node img,
+.lb-trailing-node .collab-selected .network-node img {
+    float       : left;
+    height      : 18em;
+    margin      : 0 1em 1em 0;
+    position    : relative;
+}
+
+.collab-selected .network-node,
+.lb-trailing-node .collab-selected .network-node {
+    height      : auto;
+}
+
+.lb-trailing-node.collab-selected .network-node h4,
+.lb-trailing-node.collab-selected .network-node p {
+    display     : block;
+}
+
+.lb-trailing-node .collab-selected .network-node {
+background: -moz-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.65) 89%, rgba(0,0,0,0.65) 100%); /* FF3.6+ */
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(0,0,0,0.65)), color-stop(89%,rgba(0,0,0,0.65)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
+background: -webkit-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%); /* Opera 12+ */
+background: -ms-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%); /* IE10+ */
+background: radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#a6000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    color       : #fff;
+    margin      : -8em -6em 0;
+    width       : 40em;
+    padding     : 2em;
 }
 
 .lb-node-hover {

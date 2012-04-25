@@ -35,11 +35,11 @@
     var pluginName = 'lbNetworkGraph',
         defaults = {
             templates : {
-                    'default' : '<div class="network-node">' +
-                                    '<h4>[%title%]</h4>' +
+                    'default' : '<div class="network-node clearfix">' +
+                                    '<img src="http://filmstore.bfi.org.uk/acatalog/[%image%]" />' +
                                     '<p>[%description%]</p>' +
                                  '</div>',
-                    'theme' :  '<div class="network-node theme">' + // to use a different template add a .type field to the json object
+                    'theme' :  '<div class="network-node theme clearfix">' + // to use a different template add a .type field to the json object
                                     '<h4>[%title%]</h4>' +
                                  '</div>',
                     'centralNode' : '<div class="starting-node">' +
@@ -52,7 +52,7 @@
             nodeId          : 'collab-node-id-',
             draggable       : true,     // is the collab map draggable ( requires jquery.ui.drggable )
             distanceNodes   : 100,      // distance between nodes
-            distanceIncrement : 4,      // distance increment from parent node when node is selected
+            distanceIncrement : 1.2,      // distance increment from parent node when node is selected
             moveTime        : 1000,     // animation time when a node is selected,
             angleLimit      : 180,
             lineColour      : '#fff',
