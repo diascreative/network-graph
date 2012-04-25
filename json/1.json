@@ -1,21 +1,6 @@
 {
-    "title" : "First Title",
-    "lineColour" : "#fff",
-    "text" : "this is some text",
-    "children" : [{
-                    "uid" : "child-1",
-                    "title" : "I'm different",
-                    "lineColour" : "#fff",
-                    "type" : "theme"
-                },
-                {
-                    "uid" : "child-2",
-                    "title" : "Child 2",
-                    "text" : "this is some text too",
-                    "lineColour" : "#fff"
-                }, {
-                    "uid" : "child-3",
-                    "title" : "Child 3",
-                    "lineColour" : "#fff"
-                }]
+    "title" : "Choose your starting point",
+    "type" : "centralNode",
+    "text"  : "<select data-url=\"./json-data/&#91;%id%&#93;.json\" data-colour=\"#6f6\"><option value=\"1\">Select a director</option><option value=\"8610\">Alfred</option><option value=\"136\">Steven</option></select><select data-url=\"./json-data/&#91;%id%&#93;.json\" data-colour=\"#66f\"><option value=\"1\">Select a Genre</option><option value=\"11486\">Horror</option><option value=\"146\">Comedy</option></select><select data-url=\"./json-data/&#91;%id%&#93;.json\" data-colour=\"#f66\"><option value=\"1\">Select a Decade</option><option value=\"28\">1940</option><option value=\"78\">1960</option></select>",
+    "children" : []
 }
