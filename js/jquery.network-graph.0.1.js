@@ -35,11 +35,10 @@
     var pluginName = 'lbNetworkGraph',
         defaults = {
             templates : {
-                    'default' : '<div class="network-node">' +
-                                    '<h4>[%title%]</h4>' +
-                                    '<p>[%description%]</p>' +
+                    'default' : '<div class="network-node clearfix">' +
+                                    '<img src="http://filmstore.bfi.org.uk/acatalog/[%image%]" />' +
                                  '</div>',
-                    'theme' :  '<div class="network-node theme">' + // to use a different template add a .type field to the json object
+                    'theme' :  '<div class="network-node theme clearfix">' + // to use a different template add a .type field to the json object
                                     '<h4>[%title%]</h4>' +
                                  '</div>',
                     'centralNode' : '<div class="starting-node">' +
@@ -47,14 +46,14 @@
                                     '<p>[%text%]</p>' +
                                  '</div>'
                     },
-            initialNodeID   : '1',
-            jsonURL         : './json/[%id%].json', // would be nice to abstract this
+            initialNodeID   : '13728',
+            jsonURL         : './json-data/[%id%].json', // would be nice to abstract this
             nodeId          : 'collab-node-id-',
             draggable       : true,     // is the collab map draggable ( requires jquery.ui.drggable )
-            distanceNodes   : 100,      // distance between nodes
-            distanceIncrement : 4,      // distance increment from parent node when node is selected
+            distanceNodes   : 200,      // distance between nodes
+            distanceIncrement : 2,      // distance increment from parent node when node is selected
             moveTime        : 1000,     // animation time when a node is selected,
-            angleLimit      : 180,
+            angleLimit      : 150,
             lineColour      : '#fff',
             className       : {
                     'node'      : 'lb-network-node',
@@ -491,24 +490,25 @@
             var children = $parent.data('children');
 
             var childNum = children.length;
+            var nodeId = this.options.nodeId;
+            
+            $.each(children, function(i) {
+                if( $('#' + nodeId + children[i].uid ).length )
+                    childNum--;
+            });
 
             var $container = $('<div class="children-nodes" />').appendTo($parent).css({ position : 'absolute', left : '50%', top : '50%' });
             var paper      = this.paper;
 
             var parentPos = $parent.position();
-            var nodeId = this.options.nodeId;
 
             var angle   = Math.floor(Math.random()*360); // start angle for rotation
-
-            if( $parent.data('parent') ) {
-                childNum++;
-            }
 
             var angleLimit = $parent.data('parent') ? this.options.angleLimit : 360;
             var aInc = angleLimit/childNum; // angle between each element
 
             if( $parent.data('parent') ) {
-                angle = $parent.data('angleFromParent') + aInc - ( this.options.angleLimit / 2 );
+                angle = ($parent.data('angleFromParent') - Math.floor((aInc*(childNum-1))/2));
             }
 
             var templates = this.options.templates;
@@ -516,6 +516,7 @@
             var $collabMap = this;
 
             $.each(children, function(i) {
+
                 if( !$('#' + nodeId + children[i].uid ).length ) {
                     var templatetype = 'default';
                     
