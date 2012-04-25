@@ -9,7 +9,7 @@
  *
  *
  * This way you can add any fields you wish to the JSON.
- * The only _required_ fields are the .id for the child nodes - for now at least
+ * The only _required_ fields are the .uid for the child nodes - for now at least
  *
  * JSON for nodes looks something like
  *    {
@@ -478,7 +478,7 @@
             var $collabMap = this;
 
             $.each(children, function(i) {
-                if( !$('#' + nodeId + children[i].id ).length ) {
+                if( !$('#' + nodeId + children[i].uid ).length ) {
                     var templatetype = 'default';
                     
                     if( children[i].type && templates[children[i].type] )
@@ -490,7 +490,7 @@
                                 .appendTo($container)
                                 .addClass($collabMap.options.className.node);
 
-                    $node.attr({ id : nodeId + children[i].id })
+                    $node.attr({ id : nodeId + children[i].uid })
                          .css({ left : 0, top : 0 });
 
                     var parent = $parent;
@@ -507,8 +507,8 @@
 
                     $node.data({ parent : $parent,
                                  angleFromParent : angle,
-                                 lineColour :  children[i].lineColour,
-                                'id' : children[i].id
+                                 lineColour :  children[i].lineColour || '#fff',
+                                'id' : children[i].uid
                               });
 
                     if( $collabMap.raphael ) {
@@ -651,10 +651,10 @@
          */
         zoom : function(direction) {
             var fontSize = parseFloat(this.$el.css('font-size'));
-            var dir = 0.9;
+            var dir = 2/3;
 
             if( typeof(direction) != 'undefined' && direction == 'in' )
-                dir = 1.1;
+                dir = 1.5;
             
             this.$el.css({ fontSize : fontSize * dir + 'px'})
         },

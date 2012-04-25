@@ -2,12 +2,12 @@
     "title" : "Child 3",
     "lineColour" : "#fff",
     "children" : [{
-                    "id" : "child-2-1",
+                    "uid" : "child-2-1",
                     "title" : "Child 1 of 2",
                     "lineColour" : "#fff"
                 },
                 {
-                    "id" : "child-2-2",
+                    "uid" : "child-2-2",
                     "title" : "Child 2 of 2",
                     "lineColour" : "#fff"
                 }]

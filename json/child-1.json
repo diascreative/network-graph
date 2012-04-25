@@ -2,13 +2,13 @@
     "title" : "Child 1",
     "lineColour" : "#fff",
     "children" : [{
-                    "id" : "child-1-1",
+                    "uid" : "child-1-1",
                     "title" : "Child 1 of 2",
                     "lineColour" : "#fff",
                     "type" : "theme"
                 },
                 {
-                    "id" : "child-1-2",
+                    "uid" : "child-1-2",
                     "title" : "Child 2 of 2",
                     "lineColour" : "#fff"
                 }]
