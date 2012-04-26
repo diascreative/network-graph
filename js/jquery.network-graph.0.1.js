@@ -99,6 +99,8 @@
         this.onChildrenSet = function() {
             // once children aer drawn
         }
+        
+        this.onCenterNode = function() {}
 
         this.init();
     }
@@ -274,9 +276,13 @@
             var speed = Math.floor((distanceToTravel/260) * 600);
 
             var mapMoveEasing = $.easing['easeInOutQuint'] ? 'easeInOutQuint' : 'linear';
+            var collabMap = this;
 
             this.map.stop(true, true).animate({ left : xCoord, top : yCoord },
-                        speed, mapMoveEasing);
+                        speed, mapMoveEasing,
+                        function() {
+                            collabMap.onCenterNode();
+                        });
         },
         /**
          * Select a specific node

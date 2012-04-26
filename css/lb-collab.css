@@ -75,10 +75,11 @@
 .selection-box {
     background      : #ED1C24;
     cursor          : default;
-    max-height      : 370px;
-    margin          : -40px 0 0 -110px;
-    padding         : 15px;
-    width           : 220px;
+    max-height      : 37em;
+    margin          : -4em 0 0 -0.9em;
+    min-height      : 10em;
+    padding         : 1.5em;
+    width           : 18em;
 }
 
 .director-box {
@@ -91,58 +92,54 @@
     width           : 186px;
 }
 
-.network-node h4,
-.network-node p,
-.lb-trailing-node.collab-selected .children-nodes .network-node h4,
-.lb-trailing-node.collab-selected .children-nodes .network-node p {
+.director-name {
+    color           : #fff;
+    margin-top      : 90%;
+    position        : absolute;
+    text-align      : center;
+    width           : 186px;
+}
+
+.network-node .text {
     display  : none;
 }
 
-.network-node,
-.collab-selected .children-nodes .network-node,
-.lb-trailing-node .children-nodes .network-node {
-    height      : 10em;
+.network-node {
+    margin      : -5em 0 0;
     min-width   : 2.5em;
 }
 
-.network-node img,
-.collab-selected .children-nodes .network-node img,
-.lb-trailing-node .children-nodes .network-node img {
+.network-node img {
     height      : 10em;
-    margin      : -5em -3em 0;
-    position    : absolute;
+    margin-left : -100%;
+    opacity     : 0.8;
 }
 
-.collab-selected .network-node img,
-.lb-trailing-node .collab-selected .network-node img {
+.collab-selected>.network-node {
+    background: -moz-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.65) 89%, rgba(0,0,0,0.65) 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(0,0,0,0.65)), color-stop(89%,rgba(0,0,0,0.65)), color-stop(100%,rgba(0,0,0,0.65)));
+    background: -webkit-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%);
+    background: -o-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%);
+    background: -ms-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%);
+    background: radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#a6000000',GradientType=1 );
+    color       : #fff;
+    margin      : -8em -6em 0;
+    width       : 40em;
+    padding     : 2em;
+}
+
+.collab-selected>.network-node>img {
     float       : left;
     height      : 18em;
     margin      : 0 1em 1em 0;
     position    : relative;
 }
 
-.collab-selected .network-node,
-.lb-trailing-node .collab-selected .network-node {
-    height      : auto;
-}
-
-.lb-trailing-node.collab-selected .network-node h4,
-.lb-trailing-node.collab-selected .network-node p {
+.collab-selected>.network-node>.text {
     display     : block;
-}
-
-.lb-trailing-node .collab-selected .network-node {
-background: -moz-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.65) 89%, rgba(0,0,0,0.65) 100%); /* FF3.6+ */
-background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(0,0,0,0.65)), color-stop(89%,rgba(0,0,0,0.65)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
-background: -webkit-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%); /* Opera 12+ */
-background: -ms-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%); /* IE10+ */
-background: radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#a6000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-    color       : #fff;
-    margin      : -8em -6em 0;
-    width       : 40em;
-    padding     : 2em;
+    max-height  : 24em;
+    overflow    : auto;
 }
 
 .lb-node-hover {

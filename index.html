@@ -33,8 +33,8 @@
                 jsonURL         : './json-data/[%id%].json',
                 templates : {
                     'default' : '<div class="network-node clearfix">' +
-                                    '<img src="http://filmstore.bfi.org.uk/acatalog/[%image%]" />' +
-                                    '<p><!--[%description%]--></p>' +
+                                    '<img class="thumbnail" src="http://filmstore.bfi.org.uk/acatalog/[%image%]" />' +
+                                    '<div class="text"><h4>[%title%]</h4><p>[%description%]</p></div>' +
                                  '</div>',
                     'centralNode' : '<div class="starting-node">' +
                                         '<div>[%text%]</div>' +
@@ -43,7 +43,7 @@
                                         '<div>[%text%]</div>' +
                                      '</div>',
                     'director' : '<div class="director-box">' +
-                                        '<div>[%text%]</div>' +
+                                        '<div class="director-name">[%text%]</div>' +
                                      '</div>'
                 }
             });
@@ -96,7 +96,8 @@
                         map.setStartAngle(false);
                         map.centerToNode(startNode.find('.lb-network-node'));
                         map.selectNode(startNode.find('.lb-network-node'));
-                        map.onChildrenSet = function() {};
+                        centerImages();
+                        map.onChildrenSet = function() { centerImages(); };
                     }
     
                     map.getChildren(startNode);
@@ -115,9 +116,6 @@
 
                 startNode.removeData('children');
 
-                map.selectNode(startNode);
-                map.centerToNode(startNode);
-
                 map.removeChildren(startNode);
 
                 $.ajax({
@@ -130,16 +128,21 @@
                         map.setStartAngle(60 + Math.floor(Math.random()*120));
 
                         map.onChildrenSet = function() {
-                            map.onChildrenSet = function() {};
+                            centerImages();
+                            map.onChildrenSet = function() { centerImages(); };
                             map.setStartAngle(false);
 
-                            map.onChildrenSet = function() {};
-
-                            var childNode = startNode.find('.lb-network-node').eq(0);
+                            var childNode = startNode.find('.children-nodes .lb-network-node').last();
                             childNode.data('children', children);
 
+                            map.onCenterNode = function() {
+                                map.onCenterNode = function() {};
+
+                                map.getChildren(childNode);
+                            }
+
                             map.selectNode(childNode);
-                            setTimeout(function() { map.getChildren(childNode); }, 600);
+                            map.centerToNode(childNode);
                         }
 
                         map.getChildren(startNode);
@@ -147,7 +150,16 @@
                 });
             });
 
-            $('#centralnode-maps area')
+            function centerImages() {
+            /*
+                $('.network-node img.thumbnail:not(.loaded)').load(function() {
+                    var $this = $(this);
+                    var marginLeft = $this.width()/-2;
+
+                    $this.addClass('loaded').closest('.network-node').css({ marginLeft : marginLeft });
+                });
+/**/
+            }
         </script>
     </body>
 </html>
