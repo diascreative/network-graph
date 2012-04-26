@@ -49,6 +49,7 @@
             distanceIncrement : 1.2,      // distance increment from parent node when node is selected
             moveTime        : 1000,     // animation time when a node is selected,
             angleLimit      : 180,
+            returnToParent  : true,
             startAngle      : false,
             lineColour      : '#fff',
             className       : {
@@ -61,6 +62,8 @@
     // Plugin constructor
     function LBNetworkGraph( element, options ) {
         this.element = element;
+
+        this.dragged = false;
 
         this.$el = $(element);
         this.options = $.extend( {}, defaults, options) ;
@@ -106,6 +109,7 @@
     }
 
     LBNetworkGraph.prototype = {
+    
         raphael : window.Raphael,
         init : function () {
 
@@ -172,8 +176,15 @@
                  typeof(window.$.ui) != 'undefined' &&
                  typeof(window.$.ui.draggable) != 'undefined' ) {
                  
-
-                this.map.draggable();
+                var $collabMap = this;
+                this.map.draggable({ opacity: 0.8,
+                                     start : function() {
+                                        $collabMap.dragged = true;
+                                     },
+                                     stop : function() {
+                                        setTimeout(function() { $collabMap.dragged = false; }, 10);
+                                      }
+                                });
 
                 // add classes to style the cursor adequately
                 this.nodes.addClass('grab-cursor');
@@ -182,8 +193,10 @@
                     $(this).addClass('grabbing-cursor');
                 });
 
-                this.nodes.mouseup(function() {
-                    $(this).removeClass('grabbing-cursor');
+                this.nodes.bind('mouseup mouseout', function() {
+                    $(this).removeClass('grabbing-cursor')
+                           .css({ cursor : 'default' })
+                           .css({ cursor : '' });
                 });
             }
 
@@ -192,19 +205,21 @@
             this.map.on('click', '.' + this.options.className.node,
                 (function(collabMap) {
                     return function(e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-        
-                        var $this = $(this);
-        
-                        if( $this.hasClass('collab-selected') && $this.data('parent') ) {
-                            // if we're clicking on an already selected node go to its parent
-                            collabMap.selectNode($this.data('parent'));
-                            collabMap.centerToNode($this.data('parent'));
-                        } else {
-                            // else, select the node
-                            collabMap.selectNode($this);
-                            collabMap.centerToNode($this);
+                        if( !collabMap.dragged ) {
+                            e.stopPropagation();
+                            e.preventDefault();
+
+                            var $this = $(this);
+            
+                            if( $this.hasClass('collab-selected') && $this.data('parent') && collabMap.options.returnToParent ) {
+                                // if we're clicking on an already selected node go to its parent
+                                collabMap.selectNode($this.data('parent'));
+                                collabMap.centerToNode($this.data('parent'));
+                            } else {
+                                // else, select the node
+                                collabMap.selectNode($this);
+                                collabMap.centerToNode($this);
+                            }
                         }
                     }
                 })(this)
@@ -213,7 +228,7 @@
             this.map.on('mouseover', '.' + this.options.className.node,
                 (function(collabMap) {
                     return function(e) {
-                        e.stopPropagation();
+                        //e.stopPropagation();
 
                         collabMap.nodes.find('.' + collabMap.options.className.nodeHover).removeClass(collabMap.options.className.nodeHover);
                         $(this).addClass(collabMap.options.className.nodeHover);
@@ -442,16 +457,19 @@
 
             // do not remove them children while they're trailing
             if( !$node.hasClass(this.options.className.trailing) || forced ) {
-                this._distFromParent($node, this.options.distanceNodes);
+                
+                if( $node.data('parent') )
+                    this._distFromParent($node, this.options.distanceNodes);
 
-                var nodeChildren = $node.find('.' + this.options.className.node);
+                var nodeChildren = $node.find('.children-nodes .' + this.options.className.node);
+
                 // fade the children out and remove them once they're out    
                 nodeChildren.each(function() {
-                    $(this).data('line').remove();
+                    var $this = $(this);
+                    $this.data('line').remove();
                 });
 
-                // fade the children out and remove them once they're out
-                $node.find('.children-nodes').animate({ opacity : 0 }, 500, function() { $(this).remove() });
+                $node.find('.children-nodes').fadeOut(500, function(){ $(this).remove(); })
             }
         },
         _replace : function(TMPLT, data) {
@@ -507,7 +525,10 @@
             
             if( !childNum ) return;
 
-            var $container = $('<div class="children-nodes" />').appendTo($parent).css({ position : 'absolute', left : '50%', top : '50%' });
+            var $container = $parent.find('.children-nodes');
+            
+            if( !$container.length )
+                $container = $('<div class="children-nodes" />').appendTo($parent).css({ position : 'absolute', left : '50%', top : '50%' });
             var paper      = this.paper;
 
             var parentPos = $parent.position();
@@ -543,7 +564,7 @@
                                 .append($($collabMap._replace(TMPLT, children[i])).addClass('lb-node'))
                                 .appendTo($container)
                                 .addClass($collabMap.options.className.node)
-                                .css({ position : 'absolute' });
+                                .css({ position : 'absolute', opacity : 0 });
 
                     $node.attr({ id : nodeId + $parent.data('id') + children[i].uid })
                          .css({ left : 0, top : 0 });
@@ -669,7 +690,7 @@
                 var nodeMoveEasing = $.easing['easeOutElastic'] ? 'easeOutBack' : 'linear';
 
                 $node.data({ coords : { left : childX, top : childY } })
-                     .animate({ left : childX + 'px', top : childY + 'px' }, this.options.moveTime, nodeMoveEasing);
+                     .animate({ left : childX + 'px', opacity : 1, top : childY + 'px' }, this.options.moveTime, nodeMoveEasing);
 
                 // draw the line to the parent as we animate
                 this._drawLineToParent($node)
@@ -681,6 +702,7 @@
          * 
          */
         _drawLineToParent : function($node) {
+
             if( $node.data('parent') ) {
                 var parent = $node.data('parent');
                 var parentPos = parent.position();

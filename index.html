@@ -32,6 +32,7 @@
                 initialNodeID : 'centralNode',
                 jsonURL         : './json-data/[%id%].json',
                 distanceNodes : 150,
+                returnToParent : false,
                 distanceIncrement : 1,
                 angleLimit : 200,
                 templates : {
@@ -48,16 +49,16 @@
                     'decades' : '<div class="selection-box decades-box">' +
                                         '<div>[%text%]</div>' +
                                      '</div>',
-                    'decade' : '<div class="decade-box">' +
+                    'decade' : '<div class="group-node decade-box">' +
                                         '<div class="decade-name">[%text%]</div>' +
                                      '</div>',
-                    'director' : '<div class="director-box">' +
+                    'director' : '<div class="group-node director-box">' +
                                         '<div class="director-name">[%text%]</div>' +
                                      '</div>',
                     'genres' : '<div class="selection-box genres-box">' +
                                         '<div>[%text%]</div>' +
                                      '</div>',
-                    'genre' : '<div class="genre-box">' +
+                    'genre' : '<div class="group-node genre-box">' +
                                         '<div class="genre-name">[%text%]</div>' +
                                      '</div>',
                 }
@@ -98,6 +99,8 @@
 
                 var map = $('#network').data('lbNetworkGraph');
 
+                map.dragged = true;
+
                 if( option == 'director' )
                     map.options.lineColour = '#ED1C24';
                 else if( option == 'decade' )
@@ -106,26 +109,45 @@
                     map.options.lineColour = '#27AAE1';
 
                 var startNode = map.getStartNode();
+                var nodeName = '.' + option + 's-box, .' + option + '-box';
 
-                if( startNode.hasClass('collab-selected') || !$('.' + option + 's-box').length ) {
+                if( startNode.hasClass('collab-selected') || !$(nodeName).length ) {
                     startNode.data('id',option);
                     startNode.removeData('children');
 
                     map.setStartAngle(120);
+
                     map.removeChildren(startNode);
     
                     map.onChildrenSet = function() {
                         map.setStartAngle(false);
-                        var childNode = startNode.find('.children-nodes .lb-network-node').last();
-                        map.centerToNode(childNode);
+                        var childNode = startNode.find('.' + option + 's-box').closest('.lb-network-node').last();
+
                         map.selectNode(childNode);
+                        map.centerToNode(childNode);
+
                         map.onChildrenSet = function() { };
                     }
-    
+
                     map.getChildren(startNode);
                 } else {
                     map.removeChildren(startNode);
+                    map.centerToNode(startNode);
                 }
+            });
+
+            $('#network').on('mouseup', 'area', function(e) {
+                var map = $('#network').data('lbNetworkGraph');
+                setTimeout(function() { map.dragged = false; }, 10);
+            });
+
+            
+            $('#network').on('mouseenter', '.group-node', function() {
+                var map = $('#network').data('lbNetworkGraph');
+                map.options.showChildren = true;
+            }).on('mouseleave', '.group-node', function() {
+                var map = $('#network').data('lbNetworkGraph');
+                map.options.showChildren = false;
             });
 
             $('#network').on('change', '.selection-box select', function() {
@@ -147,7 +169,7 @@
                         delete res.children;
 
                         startNode.data('children', [res]);
-                        map.setStartAngle(60 + Math.floor(Math.random()*120));
+                        map.setStartAngle(80 + Math.floor(Math.random()*80));
 
                         map.onChildrenSet = function() {
                             map.onChildrenSet = function() { };
