@@ -112,7 +112,6 @@
 .network-node img {
     height      : 10em;
     margin-left : -100%;
-    opacity     : 0.8;
 }
 
 .collab-selected>.network-node {

@@ -82,6 +82,9 @@
                 });
 
                 var map = $('#network').data('lbNetworkGraph');
+
+                if( option == 'director' )
+                    map.options.lineColour = '#ED1C24';
     
                 var startNode = map.getStartNode();
 
@@ -96,8 +99,7 @@
                         map.setStartAngle(false);
                         map.centerToNode(startNode.find('.lb-network-node'));
                         map.selectNode(startNode.find('.lb-network-node'));
-                        centerImages();
-                        map.onChildrenSet = function() { centerImages(); };
+                        map.onChildrenSet = function() { };
                     }
     
                     map.getChildren(startNode);
@@ -128,8 +130,7 @@
                         map.setStartAngle(60 + Math.floor(Math.random()*120));
 
                         map.onChildrenSet = function() {
-                            centerImages();
-                            map.onChildrenSet = function() { centerImages(); };
+                            map.onChildrenSet = function() { };
                             map.setStartAngle(false);
 
                             var childNode = startNode.find('.children-nodes .lb-network-node').last();
@@ -149,17 +150,6 @@
                     }
                 });
             });
-
-            function centerImages() {
-            /*
-                $('.network-node img.thumbnail:not(.loaded)').load(function() {
-                    var $this = $(this);
-                    var marginLeft = $this.width()/-2;
-
-                    $this.addClass('loaded').closest('.network-node').css({ marginLeft : marginLeft });
-                });
-/**/
-            }
         </script>
     </body>
 </html>
