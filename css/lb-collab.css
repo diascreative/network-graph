@@ -76,13 +76,16 @@
     background      : #ED1C24;
     cursor          : default;
     max-height      : 37em;
-    margin          : -4em 0 0 -0.9em;
+    margin          : -4em 0 0 -9em;
     min-height      : 10em;
     padding         : 1.5em;
+    position        : absolute;
     width           : 18em;
 }
 
-.director-box {
+.director-box,
+.decade-box,
+.genre-box {
     background      : #ED1C24;
     -webkit-border-radius: 186px;
     -moz-border-radius: 186px;
@@ -92,7 +95,19 @@
     width           : 186px;
 }
 
-.director-name {
+.decades-box,
+.decade-box {
+    background      : #8DC63F;
+}
+
+.genres-box,
+.genre-box {
+    background      : #27AAE1;
+}
+
+.director-name,
+.decade-name,
+.genre-name {
     color           : #fff;
     margin-top      : 90%;
     position        : absolute;

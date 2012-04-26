@@ -31,6 +31,9 @@
             $('#network').lbNetworkGraph({
                 initialNodeID : 'centralNode',
                 jsonURL         : './json-data/[%id%].json',
+                distanceNodes : 150,
+                distanceIncrement : 1,
+                angleLimit : 200,
                 templates : {
                     'default' : '<div class="network-node clearfix">' +
                                     '<img class="thumbnail" src="http://filmstore.bfi.org.uk/acatalog/[%image%]" />' +
@@ -39,12 +42,24 @@
                     'centralNode' : '<div class="starting-node">' +
                                         '<div>[%text%]</div>' +
                                      '</div>',
-                    'directors' : '<div class="selection-box">' +
+                    'directors' : '<div class="selection-box directors-box">' +
                                         '<div>[%text%]</div>' +
+                                     '</div>',
+                    'decades' : '<div class="selection-box decades-box">' +
+                                        '<div>[%text%]</div>' +
+                                     '</div>',
+                    'decade' : '<div class="decade-box">' +
+                                        '<div class="decade-name">[%text%]</div>' +
                                      '</div>',
                     'director' : '<div class="director-box">' +
                                         '<div class="director-name">[%text%]</div>' +
-                                     '</div>'
+                                     '</div>',
+                    'genres' : '<div class="selection-box genres-box">' +
+                                        '<div>[%text%]</div>' +
+                                     '</div>',
+                    'genre' : '<div class="genre-box">' +
+                                        '<div class="genre-name">[%text%]</div>' +
+                                     '</div>',
                 }
             });
 
@@ -85,10 +100,14 @@
 
                 if( option == 'director' )
                     map.options.lineColour = '#ED1C24';
-    
+                else if( option == 'decade' )
+                    map.options.lineColour = '#8DC63F';
+                else
+                    map.options.lineColour = '#27AAE1';
+
                 var startNode = map.getStartNode();
 
-                if( startNode.hasClass('collab-selected') ) {
+                if( startNode.hasClass('collab-selected') || !$('.' + option + 's-box').length ) {
                     startNode.data('id',option);
                     startNode.removeData('children');
 
@@ -97,8 +116,9 @@
     
                     map.onChildrenSet = function() {
                         map.setStartAngle(false);
-                        map.centerToNode(startNode.find('.lb-network-node'));
-                        map.selectNode(startNode.find('.lb-network-node'));
+                        var childNode = startNode.find('.children-nodes .lb-network-node').last();
+                        map.centerToNode(childNode);
+                        map.selectNode(childNode);
                         map.onChildrenSet = function() { };
                     }
     
@@ -139,7 +159,7 @@
                             map.onCenterNode = function() {
                                 map.onCenterNode = function() {};
 
-                                map.getChildren(childNode);
+                                setTimeout(function() { map.getChildren(childNode) }, 1000);
                             }
 
                             map.selectNode(childNode);

@@ -666,7 +666,7 @@
 
                 // store the new coords so we can access them easily
                 // animate the movement of the node to the new coords
-                var nodeMoveEasing = $.easing['easeOutElastic'] ? 'easeOutElastic' : 'linear';
+                var nodeMoveEasing = $.easing['easeOutElastic'] ? 'easeOutBack' : 'linear';
 
                 $node.data({ coords : { left : childX, top : childY } })
                      .animate({ left : childX + 'px', top : childY + 'px' }, this.options.moveTime, nodeMoveEasing);
@@ -695,10 +695,10 @@
                 var pathCoords = 'M' + parentPos.left + ' ' + parentPos.top +
                                  'L' + (parentPos.left + $node.data('coords').left) + ' ' + (parentPos.top + $node.data('coords').top);
 
-                var lineDrawEasing = $.easing['easeOutElastic'] ? 'elastic' : 'linear';
+                var lineDrawEasing = $.easing['easeOutElastic'] ? 'easeOut' : 'linear';
 
                 if( this.raphael )
-                    $node.data('line').animate({ path : pathCoords }, this.options.moveTime, lineDrawEasing);
+                    $node.data('line').animate({ path : pathCoords }, this.options.moveTime*0.5, lineDrawEasing);
             }
             
         },
