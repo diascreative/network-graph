@@ -38,15 +38,9 @@
                     'default' : '<div class="network-node clearfix">' +
                                     '<img src="http://filmstore.bfi.org.uk/acatalog/[%image%]" />' +
                                     '<p>[%description%]</p>' +
-                                 '</div>',
-                    'theme' :  '<div class="network-node theme clearfix">' + // to use a different template add a .type field to the json object
-                                    '<h4>[%title%]</h4>' +
-                                 '</div>',
-                    'centralNode' : '<div class="starting-node">' +
-                                    '<h4>[%title%]</h4>' +
-                                    '<p>[%text%]</p>' +
                                  '</div>'
                     },
+            showChildren    : false,
             initialNodeID   : '1',
             jsonURL         : './json/[%id%].json', // would be nice to abstract this
             nodeId          : 'collab-node-id-',
@@ -55,6 +49,7 @@
             distanceIncrement : 1.2,      // distance increment from parent node when node is selected
             moveTime        : 1000,     // animation time when a node is selected,
             angleLimit      : 180,
+            startAngle      : false,
             lineColour      : '#fff',
             className       : {
                     'node'      : 'lb-network-node',
@@ -72,6 +67,38 @@
 
         this._defaults = defaults;
         this._name = pluginName;
+
+        this.currentNode = function() {
+            return this.nodes.find('.collab-selected');
+        }
+
+        this.getStartNode = function() {
+            return this.nodes.find('#' + this.options.nodeId + this.options.initialNodeID);
+        }
+
+        this.getJsonUrl = function() {
+            return this.options.jsonURL;
+        }
+
+        this.setJsonUrl = function(url) {
+            return this.options.jsonURL = url;
+        }
+
+        this.getChildren = function($node) {
+            this._getChildren($node);
+        }
+        
+        this.removeChildren = function($node) {
+            this._removeChildren($node,true);
+        }
+        
+        this.setStartAngle = function(angle) {
+            this.options.startAngle = angle;
+        }
+        
+        this.onChildrenSet = function() {
+            // once children aer drawn
+        }
 
         this.init();
     }
@@ -164,6 +191,7 @@
                 (function(collabMap) {
                     return function(e) {
                         e.stopPropagation();
+                        e.preventDefault();
         
                         var $this = $(this);
         
@@ -189,41 +217,6 @@
                         $(this).addClass(collabMap.options.className.nodeHover);
                     }
                 })(this)
-            );
-
-            this.nodes.on('change', 'select',
-                (function(collabMap) {
-                    return function() {
-                        var $this = $(this);
-                        var $siblings = $this.siblings('select');
-                        
-                        var $node = $this.closest('.lb-network-node');
-                        var hadChildren = $node.data('children') ? $node.data('children').length : false;
-
-                        if( $this.val() === '1' ) {
-                            $siblings.removeAttr('disabled');
-                        } else {
-                            $siblings.attr('disabled', 'disabled');
-                        }
-
-                        $node.data('id', $this.val())
-                             .removeData('children')
-                             .removeClass(collabMap.options.className.trailing);
-
-                        if( $this.attr('data-colour') )
-                            collabMap.options.lineColour = $this.attr('data-colour');
-
-                        if( $this.attr('data-url') )
-                            collabMap.options.jsonURL = $this.attr('data-url');
-
-                        if( hadChildren ) {
-                            collabMap._removeChildren($node);
-                            setTimeout(function() { collabMap._getChildren($node); }, 1000);
-                        } else {
-                            collabMap._getChildren($node);
-                        }
-                    }
-                })(this)    
             );
 
             // add our initial node
@@ -330,7 +323,9 @@
             // get the children for the selected node
             // after the animation has finished
             var $collabMap = this;
-            setTimeout(function() { $collabMap._getChildren($node) }, this.options.moveTime);
+            
+            if( this.options.showChildren )
+                setTimeout(function() { $collabMap._getChildren($node) }, this.options.moveTime);
 
             // remove new trail class from nodes
             this.nodes.find('.lb-network-new-trail').removeClass('lb-network-new-trail');
@@ -414,7 +409,8 @@
                                 .append($(collabMap._replace(collabMap.options.templates[templatetype], node)).addClass('lb-node'))
                                 .appendTo(collabMap.nodes)
                                 .attr({ id : collabMap.options.nodeId + collabMap.options.initialNodeID })
-                                .addClass(collabMap.options.className.node)
+                                .data('id', collabMap.options.initialNodeID)
+                                .addClass(collabMap.options.className.node + ' collab-selected')
                                 .css({ position : 'absolute' });
         
                     var centerScreen = collabMap._centerScreen();
@@ -433,9 +429,13 @@
          * {$node} node to lose its children
          * 
          */
-        _removeChildren : function($node) {
-            // do not remove them children whil they're trailing
-            if( !$node.hasClass(this.options.className.trailing) ) {
+        _removeChildren : function($node, forced) {
+            
+            if( typeof(forced) == 'undefined' )
+                forced = false;
+
+            // do not remove them children while they're trailing
+            if( !$node.hasClass(this.options.className.trailing) || forced ) {
                 this._distFromParent($node, this.options.distanceNodes);
 
                 var nodeChildren = $node.find('.' + this.options.className.node);
@@ -469,10 +469,9 @@
          * 
          */
         _getChildren : function($node) {
-            if( !$node.data('children') ) {
+            if( $node.data('id') && (!$node.data('children') || !$node.data('children').length) ) {
                 // if we have not grabbed the child nodes for this node before
                 var url = this.options.jsonURL.replace(/\[\%id\%\]/gi, $node.data('id'));
-
                 $.ajax({
                     url     : url,
                     dataType : 'json',
@@ -480,7 +479,7 @@
                         //console.log(res)
                     },
                     success : ( function(collabMap) { return function(node) {
-                        $node.data({ children : node.children })
+                        $node.data({ children : node.children });
                         // once we have the children, set them 
                         collabMap._setChildren($node);
                     }})(this)
@@ -498,7 +497,9 @@
         _setChildren : function($parent) {
             var children = $parent.data('children');
 
-            var childNum = children.length;
+            var childNum = children ? children.length : 0;
+            
+            if( !childNum ) return;
 
             var $container = $('<div class="children-nodes" />').appendTo($parent).css({ position : 'absolute', left : '50%', top : '50%' });
             var paper      = this.paper;
@@ -506,7 +507,7 @@
             var parentPos = $parent.position();
             var nodeId = this.options.nodeId;
 
-            var angle   = Math.floor(Math.random()*360); // start angle for rotation
+            var angle   = this.options.startAngle ? this.options.startAngle : Math.floor(Math.random()*360); // start angle for rotation
 
             if( $parent.data('parent') ) {
                 childNum++;
@@ -516,7 +517,7 @@
             var aInc = angleLimit/childNum; // angle between each element
 
             if( $parent.data('parent') ) {
-                angle = $parent.data('angleFromParent') + aInc - ( this.options.angleLimit / 2 );
+                angle = ($parent.data('angleFromParent') - Math.floor((aInc*(childNum-1))/2));
             }
 
             var templates = this.options.templates;
@@ -524,7 +525,7 @@
             var $collabMap = this;
 
             $.each(children, function(i) {
-                if( !$('#' + nodeId + children[i].uid ).length ) {
+                if( !$('#' + nodeId + $parent.data('id') + children[i].uid ).length ) {
                     var templatetype = 'default';
                     
                     if( children[i].type && templates[children[i].type] )
@@ -538,7 +539,7 @@
                                 .addClass($collabMap.options.className.node)
                                 .css({ position : 'absolute' });
 
-                    $node.attr({ id : nodeId + children[i].uid })
+                    $node.attr({ id : nodeId + $parent.data('id') + children[i].uid })
                          .css({ left : 0, top : 0 });
 
                     var parent = $parent;
@@ -572,6 +573,8 @@
                     angle += aInc;
                 }
             });
+            
+            this.onChildrenSet();
 
         },
         /**
@@ -733,8 +736,8 @@
 
     $.fn[pluginName] = function ( options ) {
         return this.each(function () {
-            if (!$.data(this, 'plugin_' + pluginName)) {
-                $.data(this, 'plugin_' + pluginName,
+            if (!$.data(this, pluginName)) {
+                $.data(this, pluginName,
                 new LBNetworkGraph( this, options ));
             }
         });

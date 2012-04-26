@@ -19,14 +19,135 @@
         <!-- great little plugin for touch devices ( to allow jquery ui dragging in them -->
         <script src="./js/jquery.ui.touch-punch.min.js"></script>
         
+        <script src="./js/jquery.transit.min.js"></script>
+        
         <!-- we rely on RaphaelJS to draw the lines between nodes -->
         <script src="./js/raphael-min.js"></script>
 
         <!-- Plugin -->
-        <script src="./js/jquery.network-graph.0.1.min.js"></script>
+        <script src="./js/jquery.network-graph.0.1.js"></script>
 
         <script type="text/javascript">
-            $('#network').lbNetworkGraph();
+            $('#network').lbNetworkGraph({
+                initialNodeID : 'centralNode',
+                jsonURL         : './json-data/[%id%].json',
+                templates : {
+                    'default' : '<div class="network-node clearfix">' +
+                                    '<img src="http://filmstore.bfi.org.uk/acatalog/[%image%]" />' +
+                                    '<p><!--[%description%]--></p>' +
+                                 '</div>',
+                    'centralNode' : '<div class="starting-node">' +
+                                        '<div>[%text%]</div>' +
+                                     '</div>',
+                    'directors' : '<div class="selection-box">' +
+                                        '<div>[%text%]</div>' +
+                                     '</div>',
+                    'director' : '<div class="director-box">' +
+                                        '<div>[%text%]</div>' +
+                                     '</div>'
+                }
+            });
+
+            $('#network').on('mousedown', 'area', function(e) {
+                e.stopPropagation();
+
+                var option = $(this).attr('href').replace('#', '');
+                var $wheel = $('.wheel-background');
+                
+                var angles = {
+                    genre    : 60,
+                    director : 180,
+                    decade   : 300
+                }
+
+                var angle = parseInt($wheel.css('rotate'));
+
+                var linePos = 60;
+
+                if( angle - angles[option] > 180 )
+                    angle = '+=' + (angles[option] + linePos);
+                else if( angle - angles[option] < -180 )
+                    angle = '-=' + Math.abs(( (360+linePos) - angles[option] ));
+                else
+                    angle = angles[option];
+
+                $wheel.transition({ rotate : angle + 'deg' }, function() {
+                    var angle = parseInt($wheel.css('rotate'));
+
+                    if( angle > 360 )
+                        $wheel.css({ rotate : (angle%360) + 'deg' });
+                    else if( angle < 0 ) {
+                        $wheel.css({ rotate : (360+angle) + 'deg' });
+                    }
+                });
+
+                var map = $('#network').data('lbNetworkGraph');
+    
+                var startNode = map.getStartNode();
+
+                if( startNode.hasClass('collab-selected') ) {
+                    startNode.data('id',option);
+                    startNode.removeData('children');
+
+                    map.setStartAngle(120);
+                    map.removeChildren(startNode);
+    
+                    map.onChildrenSet = function() {
+                        map.setStartAngle(false);
+                        map.centerToNode(startNode.find('.lb-network-node'));
+                        map.selectNode(startNode.find('.lb-network-node'));
+                        map.onChildrenSet = function() {};
+                    }
+    
+                    map.getChildren(startNode);
+                } else {
+                    map.removeChildren(startNode);
+                }
+            });
+
+            $('#network').on('change', '.selection-box select', function() {
+                var map = $('#network').data('lbNetworkGraph');
+                var $select = $(this);
+                var startNode = map.getStartNode();
+                
+                var $node = $select.closest('.lb-network-node');
+                $node.data('line').remove();
+
+                startNode.removeData('children');
+
+                map.selectNode(startNode);
+                map.centerToNode(startNode);
+
+                map.removeChildren(startNode);
+
+                $.ajax({
+                    url : './json-data/' + $select.val() + '.json',
+                    success : function(res) {
+                        var children = res.children;
+                        delete res.children;
+
+                        startNode.data('children', [res]);
+                        map.setStartAngle(60 + Math.floor(Math.random()*120));
+
+                        map.onChildrenSet = function() {
+                            map.onChildrenSet = function() {};
+                            map.setStartAngle(false);
+
+                            map.onChildrenSet = function() {};
+
+                            var childNode = startNode.find('.lb-network-node').eq(0);
+                            childNode.data('children', children);
+
+                            map.selectNode(childNode);
+                            setTimeout(function() { map.getChildren(childNode); }, 600);
+                        }
+
+                        map.getChildren(startNode);
+                    }
+                });
+            });
+
+            $('#centralnode-maps area')
         </script>
     </body>
 </html>
