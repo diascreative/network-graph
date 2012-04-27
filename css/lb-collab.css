@@ -1,3 +1,7 @@
+.lb-network-node {
+    z-index     : 2;
+}
+
 .network-node.collab-selected {
     background  : #ffaf4b; /* Old browsers */
     background  : -moz-linear-gradient(top,  #ffaf4b 0%, #ff920a 100%); /* FF3.6+ */
@@ -89,9 +93,10 @@
     background      : #ED1C24;
     -webkit-border-radius: 186px;
     -moz-border-radius: 186px;
-    border-radius: 186px;
+    border-radius   : 186px;
     height          : 186px;
     margin          : -93px 0 0 -93px;
+    position        : absolute;
     width           : 186px;
 }
 
@@ -109,13 +114,20 @@
 .decade-name,
 .genre-name {
     color           : #fff;
-    margin-top      : 90%;
+    margin-top      : 40%;
     position        : absolute;
     text-align      : center;
     width           : 186px;
 }
 
-.network-node .text {
+.node-for-decade>.lb-network-node>.children-nodes>.collab-selected>.network-node>.actions>.set-decade,
+.node-for-director>.lb-network-node>.children-nodes>.collab-selected>.network-node>.actions>.set-director,
+.node-for-genre>.lb-network-node>.children-nodes>.collab-selected>.network-node>.actions>.set-genre {
+    display         : none;
+}
+
+.network-node .text,
+.network-node .actions {
     display  : none;
 }
 
@@ -126,7 +138,8 @@
 
 .network-node img {
     height      : 10em;
-    margin-left : -100%;
+    margin      : -5em 0 0 -3em;
+    position    : absolute;
 }
 
 .collab-selected>.network-node {
@@ -150,7 +163,8 @@
     position    : relative;
 }
 
-.collab-selected>.network-node>.text {
+.collab-selected>.network-node>.text,
+.collab-selected>.network-node>.actions {
     display     : block;
     max-height  : 24em;
     overflow    : auto;

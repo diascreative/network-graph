@@ -583,6 +583,7 @@
 
                     $node.data({ parent : $parent,
                                  angleFromParent : angle,
+                                 type : templatetype,
                                  lineColour :  children[i].lineColour || $collabMap.options.lineColour,
                                 'id' : children[i].uid
                               });
