@@ -78,14 +78,19 @@
 
                 var angle = parseInt($wheel.css('rotate'));
 
-                var linePos = 60;
+                var dAngle = angles[option] - angle;
+                var vAngle = Math.abs(dAngle);
 
-                if( angle - angles[option] > 180 )
-                    angle = '+=' + (angles[option] + linePos);
-                else if( angle - angles[option] < -180 )
-                    angle = '-=' + Math.abs(( (360+linePos) - angles[option] ));
+                if( dAngle > 239 ) {
+                    angle = '-=' + (360-vAngle);
+                } else if( dAngle > -121 && dAngle < 0 ) {
+                    angle = '+=' + (-vAngle);
+                } else if( dAngle > -241 && dAngle < -120 ) {
+                    angle = '+=' + (360-vAngle);
+                } else if( dAngle < 0 )
+                    angle = '-=' + vAngle;
                 else
-                    angle = angles[option];
+                    angle = '+=' + vAngle;
 
                 $wheel.transition({ rotate : angle + 'deg' }, function() {
                     var angle = parseInt($wheel.css('rotate'));
