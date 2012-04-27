@@ -52,6 +52,8 @@
             returnToParent  : true,
             startAngle      : false,
             lineColour      : '#fff',
+            lineWidth       : 6,
+            lineWidthSelected : 3,
             className       : {
                     'node'      : 'lb-network-node',
                     'nodeHover' : 'lb-node-hover',
@@ -317,7 +319,7 @@
             $node.addClass('collab-selected');
 
             if( $node.data('line') ) {
-                $node.data('line').attr({ 'stroke-width' : 3 });
+                $node.data('line').attr({ 'stroke-width' : this.options.lineWidthSelected });
             }
             
             // trail this node
@@ -374,7 +376,7 @@
             $node.addClass(this.options.className.trailing + ' lb-network-new-trail');
 
             // trail node's line width
-            if( $node.data('line') ) $node.data('line').attr({ 'stroke-width' : 3 });
+            if( $node.data('line') ) $node.data('line').attr({ 'stroke-width' : this.options.lineWidthSelected });
 
         },
         /**
@@ -389,7 +391,7 @@
                 $node.removeClass(this.options.className.trailing);
 
                 // return line width to its original glory
-                if( $node.data('line') ) $node.data('line').attr({ 'stroke-width' : 6 });
+                if( $node.data('line') ) $node.data('line').attr({ 'stroke-width' : this.options.lineWidth });
 
                 // no timeout no worky :\ find out why!
                 var $collabMap = this;
@@ -591,7 +593,7 @@
                     if( $collabMap.raphael ) {
                         $node.data({ line :  $collabMap.paper.path(pathCoords) });
                         $node.data('line').attr({
-                            'stroke-width' : 6,
+                            'stroke-width' : $collabMap.options.lineWidth,
                             'stroke' : $node.data('lineColour')
                         });
                     }

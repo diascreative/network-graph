@@ -35,11 +35,16 @@
                 returnToParent : false,
                 distanceIncrement : 1,
                 angleLimit : 200,
+                lineWidth : 3,
                 templates : {
                     'default' : '<div class="network-node clearfix">' +
                                     '<img class="thumbnail" src="http://filmstore.bfi.org.uk/acatalog/[%image%]" />' +
                                     '<div class="text"><h4>[%title%]</h4><p>[%description%]</p></div>' +
-                                    '<div class="actions"><button class="change-relations set-decade" rel="1940">40s</button><button class="change-relations set-director" rel="alfred">Alfred</button><button class="change-relations set-genre" rel="action">Action</button></div>' +
+                                    '<div class="actions">' + 
+                                        '<button class="change-relations set-decade" rel="decades/1980">80s</button>' +
+                                        '<button class="change-relations set-director" rel="directors/glassman-arnold">Glassman, Arnold</button>' +
+                                        '<button class="change-relations set-genre" rel="genres/early-and-silent-cinema">Early and Silent Cinema</button></div>' +
+                                        '<button class="return-parent">Back</button></div>' +
                                  '</div>',
                     'centralNode' : '<div class="starting-node">' +
                                         '<div>[%text%]</div>' +
@@ -51,16 +56,16 @@
                                         '<div>[%text%]</div>' +
                                      '</div>',
                     'decade' : '<div class="group-node decade-box">' +
-                                        '<div class="decade-name">[%text%]</div>' +
+                                        '<div class="decade-name">[%title%]</div>' +
                                      '</div>',
                     'director' : '<div class="group-node director-box">' +
-                                        '<div class="director-name">[%text%]</div>' +
+                                        '<div class="director-name">[%title%]</div>' +
                                      '</div>',
                     'genres' : '<div class="selection-box genres-box">' +
                                         '<div>[%text%]</div>' +
                                      '</div>',
                     'genre' : '<div class="group-node genre-box">' +
-                                        '<div class="genre-name">[%text%]</div>' +
+                                        '<div class="genre-name">[%title%]</div>' +
                                      '</div>',
                 }
             });
@@ -142,6 +147,28 @@
                 }
             });
 
+            $('#network').on('mousedown', 'button.return-parent', function(e) {
+                e.preventDefault();
+
+                var map = $('#network').data('lbNetworkGraph');
+                var currentNode = map.currentNode();
+                
+                map.selectNode(currentNode.data('parent'));
+                map.centerToNode(currentNode.data('parent'));
+                
+            });
+            
+            
+            $('#network').on('mousedown', '.thumbnail', function() {
+                var $node = $(this).closest('.lb-network-node');
+                var isSel = $(this).parent().parent().hasClass('collab-selected');
+                var isTrail = $(this).parent().parent().hasClass('lb-trailing-node');
+                
+                if( !isSel && isTrail ) {
+                    var map = $('#network').data('lbNetworkGraph');
+                    map.removeChildren($node);
+                }
+            });
 
             $('#network').on('mousedown', 'button.change-relations', function(e) {
                 var map = $('#network').data('lbNetworkGraph');
@@ -155,6 +182,8 @@
 
                 if( $button.hasClass('set-decade') )
                     map.options.lineColour = '#8DC63F';
+                else if( $button.hasClass('set-director') )
+                    map.options.lineColour = '#ED1C24';
                 else
                     map.options.lineColour = '#27AAE1';
 
@@ -165,7 +194,7 @@
                         delete res.children;
 
                         currentNode.data('children', [res])
-                                    .removeClass('collab-selected');
+                                   .removeClass('collab-selected');
 
                         map.onChildrenSet = function() {
                             map.onChildrenSet = function() { };

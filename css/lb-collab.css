@@ -31,6 +31,10 @@
     user-select: none;
 }
 
+.collab-selected {
+    z-index     : 20;
+}
+
 .starting-node {
     height          : 187px;
     margin          : -94px 0 0 -94px;
@@ -118,6 +122,18 @@
     position        : absolute;
     text-align      : center;
     width           : 186px;
+}
+
+.node-for-decade>.lb-network-node>.children-nodes>.collab-selected>.network-node {
+    border      : #8DC63F 3px solid;
+}
+
+.node-for-director>.lb-network-node>.children-nodes>.collab-selected>.network-node {
+    border      : #ED1C24 3px solid;
+}
+
+.node-for-genre>.lb-network-node>.children-nodes>.collab-selected>.network-node {
+    border      : #27AAE1 3px solid;
 }
 
 .node-for-decade>.lb-network-node>.children-nodes>.collab-selected>.network-node>.actions>.set-decade,
