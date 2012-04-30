@@ -157,11 +157,11 @@
                 map.centerToNode(currentNode.data('parent'));
                 
             });
-            
+
             $('#network').on('mouseenter', '.thumbnail', function() {
                 $('#network').data('lbNetworkGraph').dragged = false;
             });
-            
+
             $('#network').on('mousedown', '.thumbnail', function() {
                 var $node = $(this).closest('.lb-network-node');
                 var isSel = $(this).parent().parent().hasClass('collab-selected');

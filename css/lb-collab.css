@@ -148,11 +148,13 @@
 }
 
 .network-node {
+    cursor      : default;
     margin      : -5em 0 0;
     min-width   : 2.5em;
 }
 
 .network-node img {
+    cursor      : pointer;
     height      : 10em;
     margin      : -5em 0 0 -3em;
     position    : absolute;
@@ -173,6 +175,7 @@
 }
 
 .collab-selected>.network-node>img {
+    cursor      : default;
     float       : left;
     height      : 18em;
     margin      : 0 1em 1em 0;
