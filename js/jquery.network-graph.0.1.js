@@ -92,27 +92,28 @@
         this.getChildren = function($node) {
             this._getChildren($node);
         }
-        
+
         this.removeChildren = function($node) {
             this._removeChildren($node,true);
         }
-        
+
         this.setStartAngle = function(angle) {
             this.options.startAngle = angle;
         }
-        
+
         this.onChildrenSet = function() {
             // once children aer drawn
         }
-        
+
         this.onCenterNode = function() {}
 
         this.init();
     }
 
     LBNetworkGraph.prototype = {
-    
+
         raphael : window.Raphael,
+        rightClickTimer : 0,
         init : function () {
 
             // as the map is set so it can occupy a large area we
@@ -150,6 +151,24 @@
 
             // controls
             //
+
+            // zoom in on double click
+            this.map.dblclick((function(collabMap){ return function(e){
+                                    collabMap.zoom('in');
+                                } })(this));
+
+            // zoom out on double right click
+            this.map.contextmenu((function(collabMap){ return function(e) {
+                                    var rightClickTimeN = new Date();
+
+                                    if( collabMap.rightClickTimer && rightClickTimeN - collabMap.rightClickTimer < 200 )
+                                        collabMap.zoom('out');
+                                    else
+                                        collabMap.rightClickTimer = rightClickTimeN;
+
+                                    return false;                                    
+                                } })(this));
+
             this.zoomIn = $('<div class="collab-map-zoom-in">+</div>')
                                 .appendTo(this.$el)
                                 .click((function(collabMap){ return function(){
@@ -208,7 +227,7 @@
                 (function(collabMap) {
                     return function(e) {
                         if( !collabMap.dragged ) {
-                            e.stopPropagation();
+//                            e.stopPropagation();
                             e.preventDefault();
 
                             var $this = $(this);
@@ -735,12 +754,16 @@
          */
         zoom : function(direction) {
             var fontSize = parseFloat(this.$el.css('font-size'));
+
             var dir = 2/3;
 
             if( typeof(direction) != 'undefined' && direction == 'in' )
                 dir = 1.5;
+
+            this.nodes.transition({ scale : dir*this.nodes.css('scale') });
+            this.lines.transition({ scale : dir*this.nodes.css('scale') });
             
-            this.$el.css({ fontSize : fontSize * dir + 'px'})
+//            this.$el.css({ fontSize : fontSize * dir + 'px'})
         },
         /**
          * Get the center coords of the map
