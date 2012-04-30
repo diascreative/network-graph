@@ -114,6 +114,7 @@
 
         raphael : window.Raphael,
         rightClickTimer : 0,
+        moz : ( $.browser.mozilla ),
         init : function () {
 
             // as the map is set so it can occupy a large area we
@@ -328,7 +329,7 @@
         selectNode : function($node) {
             // de-select previous selection
             //
-            var $current = this.nodes.find('.collab-selected').removeClass('collab-selected');
+            var $current = this.nodes.find('.collab-selected');
 
             // detrail this node
             this.deSelectNode($current);
@@ -354,13 +355,16 @@
 
             // de-trail ancestors of the previous selected node
             var parent = $current.data('parent');
+            // set the node at the new distance from the parent
+
+            if( parent ) {
+                this._distFromParent($node, (this.options.distanceNodes * this.options.distanceIncrement));
+            }
+
             while( parent ) {
                 this._deTrailNode(parent);
                 parent = parent.data('parent');
             }
-
-            // set the node at the new distance from the parent
-            this._distFromParent($node, (this.options.distanceNodes * this.options.distanceIncrement));
 
             // get the children for the selected node
             // after the animation has finished
@@ -459,7 +463,7 @@
                     var centerNode = collabMap._centerPos();
         
                     newNode.addClass(collabMap.options.className.trailing).css({ left : centerScreen[0] + 'px', top : centerScreen[1] + 'px' })
-                           .data({ coords : { left : centerNode[0], top : centerNode[1] },
+                           .data({ coords : { left : centerScreen[0], top : centerScreen[1] },
                                    children : node.children || [] });
         
                     collabMap._getChildren(newNode);
@@ -550,9 +554,10 @@
             
             if( !$container.length )
                 $container = $('<div class="children-nodes" />').appendTo($parent).css({ position : 'absolute', left : '50%', top : '50%' });
+
             var paper      = this.paper;
 
-            var parentPos = $parent.position();
+            var parentPos = $parent.data('coords');
             var nodeId = this.options.nodeId;
 
             var angle   = this.options.startAngle ? this.options.startAngle : Math.floor(Math.random()*360); // start angle for rotation
@@ -572,6 +577,23 @@
 
             var $collabMap = this;
 
+
+            var parent = $parent;
+            var parentPos = parent.position();
+
+            while( parent.data('parent') ) {
+                parent = parent.data('parent');
+                var pos = parent.position();
+
+                parentPos.left += pos.left;
+                parentPos.top += pos.top;
+            }
+
+            var scaling = ( this.moz ? 1 : this.nodes.css('scale') )
+
+            parentPos.left = parentPos.left/scaling;
+            parentPos.top = parentPos.top/scaling;
+
             $.each(children, function(i) {
                 if( !$('#' + nodeId + $parent.data('id') + children[i].uid ).length ) {
                     var templatetype = 'default';
@@ -589,16 +611,6 @@
 
                     $node.attr({ id : nodeId + $parent.data('id') + children[i].uid })
                          .css({ left : 0, top : 0 });
-
-                    var parent = $parent;
-                    parentPos = $parent.position();
-
-                    while( parent.data('parent') ) {
-                        parent = parent.data('parent');
-                        var pos = parent.position();
-                        parentPos.left += pos.left;
-                        parentPos.top += pos.top;
-                    }
 
                     var pathCoords = 'M' + parentPos.left + ' ' + parentPos.top + 'L' + parentPos.left + ' ' + parentPos.top;
 
@@ -732,12 +744,20 @@
                 while( parent.data('parent') ) {
                     parent = parent.data('parent');
                     var pos = parent.position();
+
                     parentPos.left += pos.left;
                     parentPos.top += pos.top;
                 }
 
+                var scaling = ( this.moz ? 1 : this.nodes.css('scale') )
+
+                parentPos.left = parentPos.left/scaling;
+                parentPos.top = parentPos.top/scaling;
+
+                var nodeCoords = $node.data('coords');
+
                 var pathCoords = 'M' + parentPos.left + ' ' + parentPos.top +
-                                 'L' + (parentPos.left + $node.data('coords').left) + ' ' + (parentPos.top + $node.data('coords').top);
+                                 'L' + (parentPos.left + nodeCoords.left) + ' ' + (parentPos.top + nodeCoords.top);
 
                 var lineDrawEasing = $.easing['easeOutElastic'] ? 'easeOut' : 'linear';
 
@@ -760,9 +780,9 @@
             if( typeof(direction) != 'undefined' && direction == 'in' )
                 dir = 1.5;
 
-            this.nodes.transition({ scale : dir*this.nodes.css('scale') });
             this.lines.transition({ scale : dir*this.nodes.css('scale') });
-            
+            this.nodes.transition({ scale : dir*this.nodes.css('scale') });
+//            this.nodes.animate({ zoom : 2 });
 //            this.$el.css({ fontSize : fontSize * dir + 'px'})
         },
         /**
