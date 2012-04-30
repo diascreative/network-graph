@@ -153,7 +153,7 @@
             //
 
             // zoom in on double click
-            this.map.dblclick((function(collabMap){ return function(e){
+            this.map.dblclick((function(collabMap){ return function(e) {
                                     collabMap.zoom('in');
                                 } })(this));
 
@@ -171,13 +171,13 @@
 
             this.zoomIn = $('<div class="collab-map-zoom-in">+</div>')
                                 .appendTo(this.$el)
-                                .click((function(collabMap){ return function(){
+                                .click((function(collabMap){ return function() {
                                     collabMap.zoom('in');
                                 } })(this));
 
             this.zoomOut = $('<div class="collab-map-zoom-out">-</div>')
                                 .appendTo(this.$el)
-                                .click((function(collabMap){ return function(){
+                                .click((function(collabMap){ return function() {
                                     collabMap.zoom('out');
                                 } })(this));
 
@@ -227,7 +227,7 @@
                 (function(collabMap) {
                     return function(e) {
                         if( !collabMap.dragged ) {
-//                            e.stopPropagation();
+                            e.stopPropagation();
                             e.preventDefault();
 
                             var $this = $(this);

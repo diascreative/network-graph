@@ -158,6 +158,9 @@
                 
             });
             
+            $('#network').on('mouseenter', '.thumbnail', function() {
+                $('#network').data('lbNetworkGraph').dragged = false;
+            });
             
             $('#network').on('mousedown', '.thumbnail', function() {
                 var $node = $(this).closest('.lb-network-node');
