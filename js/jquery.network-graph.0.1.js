@@ -492,9 +492,7 @@
                 nodeChildren.each(function() {
                     var $this = $(this);
                     $this.data('line').remove();
-                });
-
-                $node.find('.children-nodes').fadeOut(500, function(){ $(this).remove(); })
+                }).fadeOut(500, function() { $(this).remove() });
             }
         },
         _replace : function(TMPLT, data) {
@@ -570,13 +568,17 @@
             var aInc = angleLimit/childNum; // angle between each element
 
             if( $parent.data('parent') ) {
-                angle = ($parent.data('angleFromParent') - Math.floor((aInc*(childNum-1))/2));
+                angle = $parent.data('angleFromParent');
             }
+
+            if( childNum > 2 )
+                angle -= Math.floor((aInc*(childNum-1))/2);
+            else
+                angle += (30-(Math.random()*60));
 
             var templates = this.options.templates;
 
             var $collabMap = this;
-
 
             var parent = $parent;
             var parentPos = parent.position();

@@ -11,17 +11,17 @@
     background  : -ms-linear-gradient(top,  #ffaf4b 0%,#ff920a 100%); /* IE10+ */
     background  : linear-gradient(top,  #ffaf4b 0%,#ff920a 100%); /* W3C */
     filter      : progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=0 ); /* IE6-9 */
-    border      : solid 0.4em #fff;
-    -webkit-border-radius: 0.8em;
-    -moz-border-radius: 0.8em;
-    border-radius: 0.8em;
+    border      : solid 4px #fff;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
     cursor      : pointer;
-    margin      : -5em 0 0 -8em;
-    max-height  : 10em;
+    margin      : -50px 0 0 -80px;
+    max-height  : 100px;
     overflow    : hidden;
-    padding     : 0.5em 1em;
+    padding     : 5px 1px;
     position    : absolute;
-    width       : 14em;
+    width       : 140px;
 
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -83,12 +83,12 @@
 .selection-box {
     background      : #ED1C24;
     cursor          : default;
-    max-height      : 37em;
-    margin          : -4em 0 0 -9em;
-    min-height      : 10em;
-    padding         : 1.5em;
+    max-height      : 370px;
+    margin          : -40px 0 0 -90px;
+    min-height      : 100px;
+    padding         : 15px;
     position        : absolute;
-    width           : 18em;
+    width           : 180px;
 }
 
 .director-box,
@@ -149,15 +149,15 @@
 
 .network-node {
     cursor      : default;
-    margin      : -5em 0 0;
-    min-width   : 2.5em;
+    margin      : -50px 0 0 -30px;
+    min-width   : 25px;
+    position    : absolute;
 }
 
 .network-node img {
     cursor      : pointer;
-    height      : 10em;
-    margin      : -5em 0 0 -3em;
-    position    : absolute;
+    height      : 100px;
+    width       : 60px
 }
 
 .collab-selected>.network-node {
@@ -169,23 +169,24 @@
     background: radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#a6000000',GradientType=1 );
     color       : #fff;
-    margin      : -8em -6em 0;
-    width       : 40em;
-    padding     : 2em;
+    margin      : -80px -60px 0;
+    width       : 400px;
+    padding     : 20px;
 }
 
 .collab-selected>.network-node>img {
     cursor      : default;
     float       : left;
-    height      : 18em;
-    margin      : 0 1em 1em 0;
+    height      : 180px;
+    margin      : 0 10px 10px 0;
     position    : relative;
+    width       : auto;
 }
 
 .collab-selected>.network-node>.text,
 .collab-selected>.network-node>.actions {
     display     : block;
-    max-height  : 24em;
+    max-height  : 240px;
     overflow    : auto;
 }
 
@@ -203,8 +204,8 @@
     background  : -ms-linear-gradient(-45deg,  rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* IE10+ */
     background  : linear-gradient(-45deg,  rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* W3C */
     filter      : progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7fbfc', endColorstr='#add9e4',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-    margin      : -5em 0 0 -5em;
-    width       : 8em;
+    margin      : -50px 0 0 -50px;
+    width       : 80px;
 }
 
 .trailing {
