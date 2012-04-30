@@ -346,18 +346,15 @@
             this._trailNode($node);
 
             // trail ancestors
-            parent = $node.data('parent');
+            var parent = $node.data('parent');
 
             while( parent ) {
                 this._trailNode(parent);
                 parent = parent.data('parent');
             }
 
-            // de-trail ancestors of the previous selected node
-            var parent = $current.data('parent');
             // set the node at the new distance from the parent
-
-            if( parent ) {
+            if( $node.data('parent') ) {
                 this._distFromParent($node, (this.options.distanceNodes * this.options.distanceIncrement));
             }
 
