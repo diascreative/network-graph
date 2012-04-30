@@ -2,6 +2,10 @@
     z-index     : 2;
 }
 
+.lb-network-node:hover {
+    z-index     : 3;
+}
+
 .network-node.collab-selected {
     background  : #ffaf4b; /* Old browsers */
     background  : -moz-linear-gradient(top,  #ffaf4b 0%, #ff920a 100%); /* FF3.6+ */
@@ -160,7 +164,7 @@
     width       : 60px
 }
 
-.collab-selected>.network-node {
+.concept-2 .collab-selected>.network-node {
     background: -moz-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.65) 89%, rgba(0,0,0,0.65) 100%);
     background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(0,0,0,0.65)), color-stop(89%,rgba(0,0,0,0.65)), color-stop(100%,rgba(0,0,0,0.65)));
     background: -webkit-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 89%,rgba(0,0,0,0.65) 100%);
@@ -174,7 +178,7 @@
     padding     : 20px;
 }
 
-.collab-selected>.network-node>img {
+.concept-2 .collab-selected>.network-node>img {
     cursor      : default;
     float       : left;
     height      : 180px;

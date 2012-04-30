@@ -36,17 +36,16 @@
         defaults = {
             templates : {
                     'default' : '<div class="network-node clearfix">' +
-                                    '<img src="http://filmstore.bfi.org.uk/acatalog/[%image%]" />' +
-                                    '<p>[%description%]</p>' +
+                                    '<img class="thumbnail" src="http://filmstore.bfi.org.uk/acatalog/[%image%]" />' +
                                  '</div>'
                     },
-            showChildren    : false,
-            initialNodeID   : '1',
-            jsonURL         : './json/[%id%].json', // would be nice to abstract this
+            showChildren    : true,
+            initialNodeID   : '13728',
+            jsonURL         : './json-data/[%id%].json', // would be nice to abstract this
             nodeId          : 'collab-node-id-',
             draggable       : true,     // is the collab map draggable ( requires jquery.ui.drggable )
-            distanceNodes   : 100,      // distance between nodes
-            distanceIncrement : 1.2,      // distance increment from parent node when node is selected
+            distanceNodes   : 180,      // distance between nodes
+            distanceIncrement : 2,      // distance increment from parent node when node is selected
             moveTime        : 1000,     // animation time when a node is selected,
             angleLimit      : 180,
             returnToParent  : true,
@@ -66,6 +65,7 @@
         this.element = element;
 
         this.dragged = false;
+        this.getChildrenTimout = 0;
 
         this.$el = $(element);
         this.options = $.extend( {}, defaults, options) ;
@@ -370,8 +370,10 @@
             // after the animation has finished
             var $collabMap = this;
             
-            if( this.options.showChildren )
-                setTimeout(function() { $collabMap._getChildren($node) }, this.options.moveTime);
+            if( this.options.showChildren ) {
+                clearTimeout(this.getChildrenTimout);
+                this.getChildrenTimout = setTimeout(function() { $collabMap._getChildren($node) }, this.options.moveTime);
+            }
 
             // remove new trail class from nodes
             this.nodes.find('.lb-network-new-trail').removeClass('lb-network-new-trail');
@@ -591,7 +593,7 @@
                 parentPos.top += pos.top;
             }
 
-            var scaling = ( this.moz ? 1 : this.nodes.css('scale') )
+            var scaling = ( this.moz ? 1 : (this.nodes.css('scale') || 1) );
 
             parentPos.left = parentPos.left/scaling;
             parentPos.top = parentPos.top/scaling;
@@ -738,7 +740,6 @@
          * 
          */
         _drawLineToParent : function($node) {
-
             if( $node.data('parent') ) {
                 var parent = $node.data('parent');
                 var parentPos = parent.position();
@@ -751,7 +752,7 @@
                     parentPos.top += pos.top;
                 }
 
-                var scaling = ( this.moz ? 1 : this.nodes.css('scale') )
+                var scaling = ( this.moz ? 1 : (this.nodes.css('scale') || 1) );
 
                 parentPos.left = parentPos.left/scaling;
                 parentPos.top = parentPos.top/scaling;
@@ -763,7 +764,7 @@
 
                 var lineDrawEasing = $.easing['easeOutElastic'] ? 'easeOut' : 'linear';
 
-                if( this.raphael )
+                if( this.raphael && $node.data('line') )
                     $node.data('line').animate({ path : pathCoords }, this.options.moveTime*0.5, lineDrawEasing);
             }
             
