@@ -113,6 +113,10 @@
     LBNetworkGraph.prototype = {
 
         raphael : window.Raphael,
+        maxZoom : 2,
+        zoomLevel : 0,
+        minZoom : -2,
+        zoomRatio : 2/3,
         rightClickTimer : 0,
         moz : ( $.browser.mozilla ),
         init : function () {
@@ -155,16 +159,28 @@
 
             // zoom in on double click
             this.map.dblclick((function(collabMap){ return function(e) {
-                                    collabMap.zoom('in');
+                                    e.preventDefault();
+
+                                    var center = collabMap._mouseCoords(e, $(this));
+
+                    				var x = (collabMap.$el.width()/2) - center.x;
+                    				var y = (collabMap.$el.height()/2) - center.y;
+
+                                    collabMap.zoom('in', [x, y]);
                                 } })(this));
 
             // zoom out on double right click
             this.map.contextmenu((function(collabMap){ return function(e) {
                                     var rightClickTimeN = new Date();
 
-                                    if( collabMap.rightClickTimer && rightClickTimeN - collabMap.rightClickTimer < 200 )
-                                        collabMap.zoom('out');
-                                    else
+                                    if( collabMap.rightClickTimer && rightClickTimeN - collabMap.rightClickTimer < 200 ) {
+                                        var center = collabMap._mouseCoords(e, $(this));
+
+                        				var x = (collabMap.$el.width()/2) - center.x;
+                        				var y = (collabMap.$el.height()/2) - center.y;
+
+                                        collabMap.zoom('out', [x, y]);
+                                    } else
                                         collabMap.rightClickTimer = rightClickTimeN;
 
                                     return false;                                    
@@ -301,25 +317,7 @@
             xCoord = this.$el.outerWidth()/2 + xCoord - (node.outerWidth()/2);
             yCoord = this.$el.outerHeight()/2 + yCoord - (node.outerHeight()/2);
 
-            // Lets move around at the same speed all the time instead
-            // of speeding up if the distance travelled is longer
-            var dx = Math.abs(xCoord - this.map.position().left);
-            var dy = Math.abs(yCoord - this.map.position().top);
-
-
-            var distanceToTravel = dy / ( Math.sin(Math.atan(dy/dx)) );
-            // that's enough trigonometry for today
-
-            var speed = Math.floor((distanceToTravel/260) * 600);
-
-            var mapMoveEasing = $.easing['easeInOutQuint'] ? 'easeInOutQuint' : 'linear';
-            var collabMap = this;
-
-            this.map.stop(true, true).animate({ left : xCoord, top : yCoord },
-                        speed, mapMoveEasing,
-                        function() {
-                            collabMap.onCenterNode();
-                        });
+            this.mapToCoords(xCoord, yCoord);
         },
         /**
          * Select a specific node
@@ -590,7 +588,7 @@
                 parentPos.top += pos.top;
             }
 
-            var scaling = ( this.moz ? 1 : (this.nodes.css('scale') || 1) );
+            var scaling = this.scale();
 
             parentPos.left = parentPos.left/scaling;
             parentPos.top = parentPos.top/scaling;
@@ -749,7 +747,7 @@
                     parentPos.top += pos.top;
                 }
 
-                var scaling = ( this.moz ? 1 : (this.nodes.css('scale') || 1) );
+                var scaling = this.scale();
 
                 parentPos.left = parentPos.left/scaling;
                 parentPos.top = parentPos.top/scaling;
@@ -772,18 +770,83 @@
          * {direction} string : 'in' or 'out'
          * 
          */
-        zoom : function(direction) {
+        zoom : function(direction, coords) {
             var fontSize = parseFloat(this.$el.css('font-size'));
 
-            var dir = 2/3;
+            var dir = this.zoomRatio;
+            var zoom = true;
 
-            if( typeof(direction) != 'undefined' && direction == 'in' )
-                dir = 1.5;
+            if( typeof(direction) != 'undefined' && direction == 'in' ) {
+                if( this.zoomLevel >= this.maxZoom )
+                    zoom = false;
+                else {
+                    this.zoomLevel++;
 
-            this.lines.transition({ scale : dir*this.nodes.css('scale') });
-            this.nodes.transition({ scale : dir*this.nodes.css('scale') });
-//            this.nodes.animate({ zoom : 2 });
-//            this.$el.css({ fontSize : fontSize * dir + 'px'})
+                    var dx = Math.abs(coords[0] - this.map.position().left);
+                    var dy = Math.abs(coords[1] - this.map.position().top);
+
+                    dx = dx/(dir*this.scaleSize());
+                    dy = dy/(dir*this.scaleSize());
+
+                    coords[0] = this.map.position().left - 2*dx;
+                    coords[1] = this.map.position().top  - 2*dy;
+                }
+
+                dir = 1/dir;
+            } else if( this.zoomLevel <= this.minZoom ) {
+                zoom = false;
+            } else {
+                this.zoomLevel--;
+
+                var dx = Math.abs(coords[0] - this.map.position().left);
+                var dy = Math.abs(coords[1] - this.map.position().top);
+
+                dx = dx*(dir*this.scaleSize());
+                dy = dy*(dir*this.scaleSize());
+
+                coords[0] = this.map.position().left + 2*dx;
+                coords[1] = this.map.position().top  + 2*dy;
+
+            }
+                
+
+            if( typeof(coords) != 'undefined' && coords.length > 1 ) {
+                this.mapToCoords(coords[0], coords[1]);
+            }
+
+            if( zoom ) {
+                this.lines.transition({ scale : dir*this.scaleSize() });
+                this.nodes.transition({ scale : dir*this.scaleSize() });
+            }
+            
+
+// for IE            this.nodes.animate({ zoom : 2 });
+        },
+        scale : function() {
+            return ( this.moz ? 1 : (this.nodes.css('scale') || 1) );
+        },
+        scaleSize : function() {
+            return this.nodes.css('scale');
+        },
+        mapToCoords : function(xCoord, yCoord) {
+            // Lets move around at the same speed all the time instead
+            // of speeding up if the distance travelled is longer
+            var dx = Math.abs(xCoord - this.map.position().left);
+            var dy = Math.abs(yCoord - this.map.position().top);
+
+            var distanceToTravel = dy / ( Math.sin(Math.atan(dy/dx)) );
+            // that's enough trigonometry for today
+
+            var speed = Math.floor((distanceToTravel/260) * 600);
+
+            var mapMoveEasing = $.easing['easeInOutQuint'] ? 'easeInOutQuint' : 'linear';
+            var collabMap = this;
+
+            this.map.stop(true, true).animate({ left : xCoord, top : yCoord },
+                        speed, mapMoveEasing,
+                        function() {
+                            collabMap.onCenterNode();
+                        });
         },
         /**
          * Get the center coords of the map
@@ -805,6 +868,39 @@
             var top = (this.map.height()/2) + (this.$el.height()/2);
             var left = (this.map.width()/2) + (this.$el.width()/2);
             return [left, top];
+        },
+        /**
+         * Get the coordinates of the position currently at the center of the map
+         * returns { left : xCoord, top : yCoord }
+         * 
+         */
+        _currentCenterPos : function() {
+            var offset = this.map.position();
+			var left = offset.left + (this.$el.width()/2);
+			var top = offset.top + (this.$el.height()/2);
+
+            return { left : left, top : top };
+        },
+        _mouseCoords : function (event, currentElement) {
+            var totalOffsetX = 0;
+            var totalOffsetY = 0;
+            var canvasX = 0;
+            var canvasY = 0;
+
+            var offset;
+
+            while( currentElement && currentElement.closest('#network').length ) {
+                offset = currentElement.position();
+                totalOffsetX += offset.left;
+                totalOffsetY += offset.top;
+                
+                currentElement = currentElement.parent();
+            }
+            
+            canvasX = event.pageX - totalOffsetX;
+            canvasY = event.pageY - totalOffsetY;
+            
+            return { x : canvasX, y : canvasY }
         }
     }
 
