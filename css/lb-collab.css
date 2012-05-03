@@ -146,9 +146,51 @@
     display         : none;
 }
 
+.set-decade, .set-director,
+.set-genre, .return-parent {
+    background  : #8DC63F;
+    -webkit-border-radius: 80px;
+    -moz-border-radius: 80px;
+    border-radius: 80px;
+    border       : none;
+    color       : #fff;
+    display     : inline-block;
+    font-size   : 10px;
+    height      : 80px;
+    margin-right : 16px;
+    vertical-align  : top;
+    width       : 80px;
+}
+
+.return-parent {
+    background  : #414042;
+    float       : right;
+    height      : 40px;
+    text-transform : uppercase;
+    width       : 40px;
+}
+
+.set-decade {
+    font-size   : 24px
+}
+
+.set-director {
+    background  : #ED1C24;
+}
+
+.set-genre {
+    background  : #27AAE1;
+}
+
 .network-node .text,
 .network-node .actions {
     display  : none;
+}
+
+.network-node .actions {
+    border-top  : 1px solid #fff;
+    margin      : 20px 0 0;
+    padding     : 20px 0 0;
 }
 
 .network-node {
