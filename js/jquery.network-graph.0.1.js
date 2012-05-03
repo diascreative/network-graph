@@ -50,6 +50,8 @@
             angleLimit      : 180,
             returnToParent  : true,
             startAngle      : false,
+            defaultImageReplace : false,
+            defaultImageWatch : false,
             lineColour      : '#fff',
             lineWidth       : 6,
             lineWidthSelected : 3,
@@ -635,7 +637,14 @@
                     angle += aInc;
                 }
             });
-            
+
+            if( this.options.defaultImageWatch && this.options.defaultImageReplace ) {
+                var replacement = this.options.defaultImageReplace;
+                $parent.find('.children-nodes ' + this.options.defaultImageWatch).error(function() {
+                    $(this).attr('src', replacement);
+                });
+            }
+
             this.onChildrenSet();
 
         },
