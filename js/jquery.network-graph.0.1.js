@@ -57,7 +57,7 @@
                     'node'      : 'lb-network-node',
                     'nodeHover' : 'lb-node-hover',
                     'trailing'  : 'lb-trailing-node'
-            }
+            }, onSelectNode : function() {}
         };
 
     // Plugin constructor
@@ -372,6 +372,8 @@
 
             // remove new trail class from nodes
             this.nodes.find('.lb-network-new-trail').removeClass('lb-network-new-trail');
+            
+            this.options.onSelectNode();
 
         },
         /**

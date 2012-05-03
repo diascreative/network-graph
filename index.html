@@ -68,8 +68,63 @@
                     'genre' : '<div class="group-node genre-box">' +
                                         '<div class="genre-name">[%title%]</div>' +
                                      '</div>'
+                }, onSelectNode : function() {
+                    var map = $('#network').data('lbNetworkGraph');
+                    var currentNode = map.currentNode();
+                    
+                    var extraInformationTypes = ['default'];
+
+                    var nodeType = currentNode.data('type');
+                    
+                    if( ~$.inArray(nodeType, extraInformationTypes) ) {
+                        var url = this.jsonURL.replace(/\[\%id\%\]/gi, currentNode.data('id'));
+                        
+                        $.ajax({
+                            url : url,
+                            dataType : 'json',
+                            success : function(res) {
+                                var directorBtn = currentNode.find('.set-director');
+                                var decadeBtn = currentNode.find('.set-decade');
+                                var genreBtn = currentNode.find('.set-genre');
+                                
+                                // update buttons
+                                var decade = res.Year;
+
+                                if( decade.indexOf('-') ) {
+                                    decade = decade.split('-')[0];
+                                }
+
+                                decade = Math.floor(parseInt(decade)/10) * 10;
+                                
+                                var decadeS = decade.toString();
+
+                                decadeBtn.text(decadeS.substring(decadeS.length-2) + 's').attr('rel', 'decades/' + decade);
+                                directorBtn.text(res.Director).attr('rel', 'directors/' + slugText(res.Director));
+                                genreBtn.text(res.Genre).attr('rel', 'genres/' + slugText(res.Genre));
+                            }
+                        })
+                    }
+
                 }
             });
+
+            function slugText(text) {
+                var strip = /[^\w\s-]/g,
+                    hyphen = /[-\s]+/g;
+                
+                text.toLowerCase();
+        
+                var map = {
+                  from: 'àáäãâèéëêìíïîòóöôõùúüûñç·/_,:;',
+                  to  : 'aaaaaeeeeiiiiooooouuuunc------'
+                };
+        
+                for ( var i=0, j=map.from.length; i < j; i++ ) {
+                    text = text.replace(new RegExp(map.from.charAt(i), 'g'), map.to.charAt(i));
+                }
+        
+                return $.trim(text.replace(strip, '')).toLowerCase().replace(hyphen, '-');
+            }
 
             $('#network').on('mousedown', 'area', function(e) {
                 e.stopPropagation();
