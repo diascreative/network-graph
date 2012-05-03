@@ -57,24 +57,30 @@
                                         '<div>[%text%]</div>' +
                                      '</div>',
                     'decade' : '<div class="group-node decade-box">' +
-                                        '<div class="decade-name">[%title%]</div>' +
+                                        '<div class="text-field decade-name">[%title%]</div>' +
                                      '</div>',
                     'director' : '<div class="group-node director-box">' +
-                                        '<div class="director-name">[%title%]</div>' +
+                                        '<div class="text-field director-name">[%title%]</div>' +
                                      '</div>',
                     'genres' : '<div class="selection-box genres-box">' +
                                         '<div>[%text%]</div>' +
                                      '</div>',
                     'genre' : '<div class="group-node genre-box">' +
-                                        '<div class="genre-name">[%title%]</div>' +
+                                        '<div class="text-field genre-name">[%title%]</div>' +
                                      '</div>'
                 }, onSelectNode : function() {
                     var map = $('#network').data('lbNetworkGraph');
                     var currentNode = map.currentNode();
                     
                     var extraInformationTypes = ['default'];
+                    var roundNodes = ['genre', 'director', 'decade'];
 
                     var nodeType = currentNode.data('type');
+                    
+                    if( ~$.inArray(nodeType, roundNodes) ) {
+                        var $field = currentNode.find('.text-field');
+                        $field.css({ marginTop : '-' + ($field.outerHeight()/2) + 'px', top : '50%'})
+                    }
                     
                     if( ~$.inArray(nodeType, extraInformationTypes) ) {
                         var url = this.jsonURL.replace(/\[\%id\%\]/gi, currentNode.data('id'));
