@@ -183,7 +183,8 @@
 }
 
 .network-node .text,
-.network-node .actions {
+.network-node .actions,
+.network-node .film-info {
     display  : none;
 }
 
@@ -220,13 +221,20 @@
     padding     : 20px;
 }
 
-.concept-2 .collab-selected>.network-node>img {
+.concept-2 .collab-selected>.network-node>.node-info-left-side img {
     cursor      : default;
+    display     : block;
+    height      : auto;
+    margin      : 0 0 10px;
+    position    : relative;
+    width       : 100%;
+}
+
+.concept-2 .collab-selected>.network-node>.node-info-left-side {
     float       : left;
-    height      : 180px;
     margin      : 0 10px 10px 0;
     position    : relative;
-    width       : auto;
+    width       : 100px;
 }
 
 .collab-selected>.network-node>.text,
@@ -234,6 +242,11 @@
     display     : block;
     max-height  : 240px;
     overflow    : auto;
+}
+
+.collab-selected>.network-node>.node-info-left-side .film-info {
+    display     : block;
+    font-size   : 10px;
 }
 
 .lb-node-hover {

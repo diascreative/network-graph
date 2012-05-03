@@ -39,12 +39,12 @@
                 showChildren : false,
                 templates : {
                     'default' : '<div class="network-node clearfix">' +
-                                    '<img class="thumbnail" src="http://filmstore.bfi.org.uk/acatalog/[%image%]" />' +
+                                    '<div class="node-info-left-side"><img class="thumbnail" src="http://filmstore.bfi.org.uk/acatalog/[%image%]" /><div class="film-info"></div></div>' +
                                     '<div class="text"><h4>[%title%]</h4><p>[%description%]</p></div>' +
                                     '<div class="actions">' + 
-                                        '<button class="change-relations set-decade" rel="decades/1980">80s</button>' +
-                                        '<button class="change-relations set-director" rel="directors/glassman-arnold">Glassman, Arnold</button>' +
-                                        '<button class="change-relations set-genre" rel="genres/early-and-silent-cinema">Early and Silent Cinema</button>' +
+                                        '<button class="change-relations set-decade" rel=""></button>' +
+                                        '<button class="change-relations set-director" rel=""></button>' +
+                                        '<button class="change-relations set-genre" rel=""></button>' +
                                         '<button class="return-parent">Back</button></div>' +
                                  '</div>',
                     'centralNode' : '<div class="starting-node">' +
@@ -86,7 +86,7 @@
                                 var directorBtn = currentNode.find('.set-director');
                                 var decadeBtn = currentNode.find('.set-decade');
                                 var genreBtn = currentNode.find('.set-genre');
-                                
+
                                 // update buttons
                                 var decade = res.Year;
 
@@ -101,6 +101,12 @@
                                 decadeBtn.text(decadeS.substring(decadeS.length-2) + 's').attr('rel', 'decades/' + decade);
                                 directorBtn.text(res.Director).attr('rel', 'directors/' + slugText(res.Director));
                                 genreBtn.text(res.Genre).attr('rel', 'genres/' + slugText(res.Genre));
+                                
+                                var info = 'Certificate :' + res.Certificate + '<br />' +
+                                           'Year : ' + res.Year + '<br />' +
+                                           'Colour : '+ res.Colour;
+                                
+                                currentNode.find('.film-info').html(info);
                             }
                         })
                     }
