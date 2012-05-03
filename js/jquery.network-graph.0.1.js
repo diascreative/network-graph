@@ -776,20 +776,15 @@
             var dir = this.zoomRatio;
             var zoom = true;
 
+            if( typeof coords == 'undefined' )
+                coords = [this.map.position().left, this.map.position().top];
+                
+
             if( typeof(direction) != 'undefined' && direction == 'in' ) {
                 if( this.zoomLevel >= this.maxZoom )
                     zoom = false;
                 else {
                     this.zoomLevel++;
-
-                    var dx = Math.abs(coords[0] - this.map.position().left);
-                    var dy = Math.abs(coords[1] - this.map.position().top);
-
-                    dx = dx/(dir*this.scaleSize());
-                    dy = dy/(dir*this.scaleSize());
-
-                    coords[0] = this.map.position().left - 2*dx;
-                    coords[1] = this.map.position().top  - 2*dy;
                 }
 
                 dir = 1/dir;
@@ -797,21 +792,10 @@
                 zoom = false;
             } else {
                 this.zoomLevel--;
-
-                var dx = Math.abs(coords[0] - this.map.position().left);
-                var dy = Math.abs(coords[1] - this.map.position().top);
-
-                dx = dx*(dir*this.scaleSize());
-                dy = dy*(dir*this.scaleSize());
-
-                coords[0] = this.map.position().left + 2*dx;
-                coords[1] = this.map.position().top  + 2*dy;
-
-            }
-                
+            }               
 
             if( typeof(coords) != 'undefined' && coords.length > 1 ) {
-                this.mapToCoords(coords[0], coords[1]);
+                // this.mapToCoords(coords[0], coords[1])
             }
 
             if( zoom ) {
