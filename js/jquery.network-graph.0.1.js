@@ -242,7 +242,7 @@
 
 
             // add event listener to nodes
-            this.map.on('click', '.' + this.options.className.node,
+            this.nodes.on('click', '.' + this.options.className.node,
                 (function(collabMap) {
                     return function(e) {
                         if( !collabMap.dragged ) {
@@ -330,7 +330,7 @@
             // de-select previous selection
             //
             var $current = this.nodes.find('.collab-selected');
-
+            
             // detrail this node
             this.deSelectNode($current);
             this._deTrailNode($current);

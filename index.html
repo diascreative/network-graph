@@ -76,12 +76,21 @@
                     
                     var extraInformationTypes = ['default'];
                     var roundNodes = ['genre', 'director', 'decade'];
+                    var selectionNodes = ['genres', 'directors', 'decades'];
 
                     var nodeType = currentNode.data('type');
-                    
+
                     if( ~$.inArray(nodeType, roundNodes) ) {
                         var $field = currentNode.find('.text-field');
                         $field.css({ marginTop : '-' + ($field.outerHeight()/2) + 'px', top : '50%'})
+                    }
+
+                    if( ~$.inArray(nodeType, selectionNodes) ) {
+                        var $list = currentNode.find('.option-list');
+                        var $cont = currentNode.find('.list-container');
+                        if( $list.outerHeight() > $cont.outerHeight() ) {
+                            $cont.before('<a class="scroll-button scroll-up " href="#scroll-up">up</a><a class="scroll-button scroll-down" href="#scroll-down">down</a>')
+                        }
                     }
                     
                     if( ~$.inArray(nodeType, extraInformationTypes) ) {
@@ -139,6 +148,47 @@
         
                 return $.trim(text.replace(strip, '')).toLowerCase().replace(hyphen, '-');
             }
+            
+            $('#network').on('mousedown', '.scroll-button', function(e) {
+                e.stopPropagation();
+
+                var collabMap = $('#network').data('lbNetworkGraph');
+                collabMap.dragged = true;
+                
+                var $but = $(this);
+                var $but2 = $but.siblings('.scroll-button');
+                var $con = $but.siblings('.list-container');
+                var $lis = $con.find('.option-list');
+                
+                var margin = parseInt($lis.css('marginTop'));
+                var marginTop = Math.abs(margin);
+                var hDiff = ($lis.outerHeight()-marginTop)-$con.outerHeight();
+                var diff = parseInt($lis.css('lineHeight')) * 5;
+
+                if( $but.hasClass('scroll-down') ) {
+                    diff = Math.min(diff, hDiff);
+                    $lis.animate({ marginTop : (margin-diff) + 'px' });
+                } else if( $but.hasClass('scroll-up') ) {
+                    diff = Math.min((margin+diff), 0);
+                    $lis.animate({ marginTop : diff + 'px' });
+                }
+                
+                var newMarginTop = parseInt($lis.css('marginTop'));
+
+                if( newMarginTop < 0 ) {
+                    $but.parent().find('.scroll-up').show();
+                } else {
+                    $but.parent().find('.scroll-up').hide();
+                }
+
+                if( ($lis.outerHeight()+newMarginTop) - $con.outerHeight() ) {
+                    $but.parent().find('.scroll-down').show();
+                } else {
+                    $but.parent().find('.scroll-down').hide();
+                }
+                
+                setTimeout(function(){ collabMap.dragged = false; }, 100);
+            });
 
             $('#network').on('mousedown', 'area', function(e) {
                 e.stopPropagation();

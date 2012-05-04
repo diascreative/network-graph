@@ -87,12 +87,11 @@
 .selection-box {
     background      : #ED1C24;
     cursor          : default;
-    max-height      : 370px;
+    height          : 356px;
     margin          : -40px 0 0 -90px;
-    min-height      : 100px;
-    padding         : 15px;
+    padding         : 7px 6px;
     position        : absolute;
-    width           : 180px;
+    width           : 235px;
 }
 
 .director-box,
@@ -116,6 +115,48 @@
 .genres-box,
 .genre-box {
     background      : #27AAE1;
+}
+
+.list-container {
+    height          : 320px;
+    overflow        : hidden;
+}
+
+.option-list a {
+    color           : #fff;
+    display         : block;
+    text-decoration : none;
+}
+
+.option-list a:hover {
+    background      : #fff;
+    color           : #ED1C24;
+}
+
+.decades-box a:hover {
+    color           : #8DC63F;
+}
+
+.genres-box a:hover{
+    color           : #27AAE1;
+}
+
+.scroll-button {
+    height          : 10px;
+    position        : absolute;
+    right           : 10px;
+    top             : 20px;
+    width           : 10px;
+    z-index         : 2;
+}
+
+.scroll-up {
+    display         : none;
+}
+
+.scroll-down {
+    bottom          : 20px;
+    top             : auto;
 }
 
 .director-name,
