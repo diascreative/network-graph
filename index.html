@@ -163,29 +163,29 @@
                 var margin = parseInt($lis.css('marginTop'));
                 var marginTop = Math.abs(margin);
                 var hDiff = ($lis.outerHeight()-marginTop)-$con.outerHeight();
-                var diff = parseInt($lis.css('lineHeight')) * 5;
+                var diff = parseInt($lis.css('lineHeight')) * 8;
 
                 if( $but.hasClass('scroll-down') ) {
-                    diff = Math.min(diff, hDiff);
-                    $lis.animate({ marginTop : (margin-diff) + 'px' });
+                    diff = margin - Math.min(diff, hDiff);
                 } else if( $but.hasClass('scroll-up') ) {
                     diff = Math.min((margin+diff), 0);
-                    $lis.animate({ marginTop : diff + 'px' });
-                }
-                
-                var newMarginTop = parseInt($lis.css('marginTop'));
-
-                if( newMarginTop < 0 ) {
-                    $but.parent().find('.scroll-up').show();
-                } else {
-                    $but.parent().find('.scroll-up').hide();
                 }
 
-                if( ($lis.outerHeight()+newMarginTop) - $con.outerHeight() ) {
-                    $but.parent().find('.scroll-down').show();
-                } else {
-                    $but.parent().find('.scroll-down').hide();
-                }
+                $lis.animate({ marginTop : diff + 'px' }, function() {
+                    var newMarginTop = parseInt($lis.css('marginTop'));
+    
+                    if( newMarginTop < 0 ) {
+                        $but.parent().find('.scroll-up').show();
+                    } else {
+                        $but.parent().find('.scroll-up').hide();
+                    }
+    
+                    if( ($lis.outerHeight()+newMarginTop) - $con.outerHeight() ) {
+                        $but.parent().find('.scroll-down').show();
+                    } else {
+                        $but.parent().find('.scroll-down').hide();
+                    }
+                });
                 
                 setTimeout(function(){ collabMap.dragged = false; }, 100);
             });
