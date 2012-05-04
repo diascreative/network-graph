@@ -44,7 +44,7 @@
             jsonURL         : './json-data/[%id%].json', // would be nice to abstract this
             nodeId          : 'collab-node-id-',
             draggable       : true,     // is the collab map draggable ( requires jquery.ui.drggable )
-            distanceNodes   : 180,      // distance between nodes
+            distanceNodes   : 220,      // distance between nodes
             distanceIncrement : 2,      // distance increment from parent node when node is selected
             moveTime        : 1000,     // animation time when a node is selected,
             angleLimit      : 180,
@@ -53,7 +53,7 @@
             defaultImageReplace : false,
             defaultImageWatch : false,
             lineColour      : '#fff',
-            variation       : 80,
+            variation       : 120,
             lineWidth       : 6,
             lineWidthSelected : 3,
             className       : {
@@ -621,6 +621,8 @@
             parentPos.top = parentPos.top/scaling;
             
             var differentiation = this.options.variation;
+            var varlk = Math.ceil(children.length/10)+2;
+
             var piFreq = Math.PI/2;
 
             $.each(children, function(i) {
@@ -658,7 +660,9 @@
                         });
                     }
 
-                    $collabMap._distFromParent($node, ($collabMap.options.distanceNodes + (differentiation*Math.sin(piFreq*i)) ));
+                    var dif = $collabMap.options.distanceNodes + (differentiation*Math.sin(piFreq*i));
+
+                    $collabMap._distFromParent($node, dif);
 
                     angle += aInc;
                 }
