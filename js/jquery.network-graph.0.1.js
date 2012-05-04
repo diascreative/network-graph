@@ -378,7 +378,7 @@
 
             // set the node at the new distance from the parent
             if( $node.data('parent') ) {
-                this._distFromParent($node, (this.options.distanceNodes * this.options.distanceIncrement));
+                this._distFromParent($node, ($node.data('distFromParent') * this.options.distanceIncrement));
             }
 
             while( parent ) {
@@ -508,7 +508,7 @@
             if( !$node.hasClass(this.options.className.trailing) || forced ) {
                 
                 if( $node.data('parent') )
-                    this._distFromParent($node, this.options.distanceNodes);
+                    this._distFromParent($node, $node.data('distFromParent'));
 
                 var nodeChildren = $node.find('.children-nodes .' + this.options.className.node);
 
@@ -645,8 +645,11 @@
 
                     var pathCoords = 'M' + parentPos.left + ' ' + parentPos.top + 'L' + parentPos.left + ' ' + parentPos.top;
 
+                    var distanceFromParent = $collabMap.options.distanceNodes + (differentiation*Math.sin(piFreq*i));
+
                     $node.data({ parent : $parent,
                                  angleFromParent : angle,
+                                 distFromParent : distanceFromParent,
                                  type : templatetype,
                                  lineColour :  children[i].lineColour || $collabMap.options.lineColour,
                                 'id' : children[i].uid
@@ -660,9 +663,7 @@
                         });
                     }
 
-                    var dif = $collabMap.options.distanceNodes + (differentiation*Math.sin(piFreq*i));
-
-                    $collabMap._distFromParent($node, dif);
+                    $collabMap._distFromParent($node, distanceFromParent);
 
                     angle += aInc;
                 }
