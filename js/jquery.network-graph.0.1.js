@@ -158,7 +158,7 @@
 
             // controls
             //
-
+/*
             // zoom in on double click
             this.map.dblclick((function(collabMap){ return function(e) {
                                     e.preventDefault();
@@ -187,7 +187,7 @@
 
                                     return false;                                    
                                 } })(this));
-
+*/
             this.zoomIn = $('<div class="collab-map-zoom-in">+</div>')
                                 .appendTo(this.$el)
                                 .click((function(collabMap){ return function() {
@@ -215,7 +215,9 @@
             if ( this.options.draggable &&
                  typeof(window.$.ui) != 'undefined' &&
                  typeof(window.$.ui.draggable) != 'undefined' ) {
-                 
+                this.options.draggable = true;
+            }
+            if ( this.options.draggable ) {
                 var $collabMap = this;
                 this.map.draggable({ opacity: 0.8,
                                      start : function() {
@@ -242,7 +244,7 @@
 
 
             // add event listener to nodes
-            this.nodes.on('click', '.' + this.options.className.node,
+            this.nodes.on('mouseup', '.' + this.options.className.node,
                 (function(collabMap) {
                     return function(e) {
                         if( !collabMap.dragged ) {
@@ -260,6 +262,26 @@
                                 collabMap.selectNode($this);
                                 collabMap.centerToNode($this);
                             }
+                        }
+                    }
+                })(this)
+            );
+
+            this.nodes.on('mouseover', '.' + this.options.className.node,
+                (function(collabMap) {
+                    return function(e) {
+                        if ( collabMap.options.draggable ) {
+                            collabMap.map.draggable('disable');
+                        }
+                    }
+                })(this)
+            );
+
+            this.nodes.on('mouseout', '.' + this.options.className.node,
+                (function(collabMap) {
+                    return function(e) {
+                        if ( collabMap.options.draggable ) {
+                            collabMap.map.draggable('enable');
                         }
                     }
                 })(this)
