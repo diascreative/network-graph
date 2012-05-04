@@ -53,6 +53,7 @@
             defaultImageReplace : false,
             defaultImageWatch : false,
             lineColour      : '#fff',
+            variation       : 80,
             lineWidth       : 6,
             lineWidthSelected : 3,
             className       : {
@@ -618,6 +619,9 @@
 
             parentPos.left = parentPos.left/scaling;
             parentPos.top = parentPos.top/scaling;
+            
+            var differentiation = this.options.variation;
+            var piFreq = Math.PI/2;
 
             $.each(children, function(i) {
                 if( !$('#' + nodeId + $parent.data('id') + children[i].uid ).length ) {
@@ -654,7 +658,7 @@
                         });
                     }
 
-                    $collabMap._distFromParent($node);
+                    $collabMap._distFromParent($node, ($collabMap.options.distanceNodes + (differentiation*Math.sin(piFreq*i)) ));
 
                     angle += aInc;
                 }
