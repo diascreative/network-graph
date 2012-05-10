@@ -87,7 +87,7 @@
 .selection-box {
     background      : #ED1C24;
     cursor          : default;
-    height          : 356px;
+    max-height      : 356px;
     margin          : -40px 0 0 -90px;
     padding         : 7px 6px;
     position        : absolute;
@@ -118,8 +118,17 @@
 }
 
 .list-container {
-    height          : 320px;
+    max-height      : 320px;
+    min-height      : 100px;
     overflow        : hidden;
+}
+
+.selection-box input {
+    border          : solid 1px #777;
+    margin          : 0 0 10px;
+    outline         : none;
+    padding         : 4px 5px 3px;
+    width           : 220px;
 }
 
 .option-list {
@@ -152,7 +161,7 @@
     position        : absolute;
     right           : 8px;
     text-indent     : 20px;
-    top             : 8px;
+    top             : 42px;
     white-space     : nowrap;
     width           : 18px;
     z-index         : 2;
