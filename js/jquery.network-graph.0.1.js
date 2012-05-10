@@ -512,11 +512,11 @@
 
                 var nodeChildren = $node.find('.children-nodes .' + this.options.className.node);
 
-                // fade the children out and remove them once they're out    
+                // fade the children out and remove them once they're out
                 nodeChildren.each(function() {
                     var $this = $(this);
                     $this.data('line').remove();
-                }).fadeOut(500, function() { $(this).remove() });
+                }).stop(true,true).animate({ opacity : 0 }, 500, function() { $(this).remove(); });
             }
         },
         _replace : function(TMPLT, data) {
