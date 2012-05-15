@@ -353,10 +353,10 @@
             // de-select previous selection
             //
             var $current = this.nodes.find('.collab-selected');
-            
+
             // detrail this node
             this.deSelectNode($current);
-            this._deTrailNode($current);
+            var $prevTrail = this.nodes.find('.' + this.options.className.trailing);
 
             // mark new node as seleced
             $node.addClass('collab-selected');
@@ -378,18 +378,20 @@
 
             // set the node at the new distance from the parent
             if( $node.data('parent') ) {
-                this._distFromParent($node, ($node.data('distFromParent') * this.options.distanceIncrement));
+                var distToMove = (this.options.distanceNodes * this.options.distanceIncrement);
+                this._distFromParent($node, distToMove);
             }
 
-            while( parent ) {
-                this._deTrailNode(parent);
-                parent = parent.data('parent');
-            }
+            var $collabMap = this;
+
+            $prevTrail.each(function() {
+                var $node = $(this);
+                if( !$node.hasClass('lb-network-new-trail') )
+                    $collabMap._deTrailNode($node);
+            });
 
             // get the children for the selected node
-            // after the animation has finished
-            var $collabMap = this;
-            
+            // after the animation has finished           
             if( this.options.showChildren ) {
                 clearTimeout(this.getChildrenTimout);
                 this.getChildrenTimout = setTimeout(function() { $collabMap._getChildren($node) }, this.options.moveTime);
@@ -442,7 +444,12 @@
 
                 // no timeout no worky :\ find out why!
                 var $collabMap = this;
-                setTimeout(function(){ $collabMap._removeChildren($node) }, 10)
+                
+                    if( $node.data('parent') )
+                        $collabMap._distFromParent($node, $node.data('distFromParent'));
+
+                    $collabMap._removeChildren($node);
+
             } else {
                 // we've alerady tried to detrail once
                 $node.removeClass('lb-network-new-trail');
@@ -506,9 +513,6 @@
 
             // do not remove them children while they're trailing
             if( !$node.hasClass(this.options.className.trailing) || forced ) {
-                
-                if( $node.data('parent') )
-                    this._distFromParent($node, $node.data('distFromParent'));
 
                 var nodeChildren = $node.find('.children-nodes .' + this.options.className.node);
 
@@ -765,6 +769,7 @@
                 var nodeMoveEasing = $.easing['easeOutElastic'] ? 'easeOutBack' : 'linear';
 
                 $node.data({ coords : { left : childX, top : childY } })
+                     .stop(true, true)
                      .animate({ left : childX + 'px', opacity : 1, top : childY + 'px' }, this.options.moveTime, nodeMoveEasing);
 
                 // draw the line to the parent as we animate

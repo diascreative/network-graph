@@ -32,10 +32,10 @@
                 initialNodeID : 'centralNode',
                 jsonURL         : './json-data/[%id%].json',
                 distanceNodes : 150,
-                defaultImageReplace : 'http://www.largeblue.com/wp-content/themes/largeblue/images/largeblue.png',
+                defaultImageReplace : './img/bfi-logo.png',
                 defaultImageWatch : '.thumbnail',
                 returnToParent : false,
-                distanceIncrement : 1,
+                distanceIncrement : 1.5,
                 angleLimit : 200,
                 lineWidth : 3,
                 showChildren : false,
@@ -326,7 +326,7 @@
                 var choice = $button.attr('rel');
                 var currentNode = map.currentNode();
 
-                currentNode.removeData('children');
+                currentNode.removeData('children').removeClass('collab-selected');;
 
                 map.removeChildren(currentNode);
 
@@ -343,8 +343,7 @@
                         var children = res.children;
                         delete res.children;
 
-                        currentNode.data('children', [res])
-                                   .removeClass('collab-selected');
+                        currentNode.data('children', [res]);
 
                         map.onChildrenSet = function() {
                             map.onChildrenSet = function() { };
