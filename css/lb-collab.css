@@ -139,6 +139,7 @@
     color           : #fff;
     display         : block;
     text-decoration : none;
+    text-transform  : capitalize;
 }
 
 .option-list a:hover {

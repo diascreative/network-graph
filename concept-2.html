@@ -26,6 +26,9 @@
 
         <!-- Plugin -->
         <script src="./js/jquery.network-graph.0.1.js"></script>
+        
+        
+        <script src="./js/jquery.mousewheel.js"></script>        
 
         <script type="text/javascript">
             $('#network').lbNetworkGraph({
@@ -88,10 +91,35 @@
                     if( ~$.inArray(nodeType, selectionNodes) ) {
                         var $list = currentNode.find('.option-list');
                         var $cont = currentNode.find('.list-container');
+                        var heightDiff = $list.outerHeight() - $cont.outerHeight();
 
-
-                        if( $list.outerHeight() > $cont.outerHeight() ) {
+                        if( heightDiff > 0 ) {
                             $cont.before('<a class="scroll-button scroll-up " href="#scroll-up">up</a><a class="scroll-button scroll-down" href="#scroll-down">down</a>')
+
+                            var butUp = $cont.siblings('.scroll-up');
+                            var butDown = $cont.siblings('.scroll-down');
+
+                            $cont.mousewheel(function(event, delta, deltaX, deltaY) {
+                                heightDiff = $list.outerHeight() - $cont.outerHeight();
+                                var diff = Math.round(parseFloat($list.css('marginTop')) + deltaY*100);
+
+                                if( diff > -heightDiff && diff < 0 ) {
+                                    $list.css({ marginTop : diff + 'px' });
+                                    if( diff < -10 ) {
+                                        butUp.show();
+                                    } else {
+                                        butUp.hide();
+                                    }
+
+                                    if( diff > 10-heightDiff ) {
+                                        butDown.show();
+                                    } else {
+                                        butDown.hide();
+                                    }
+                                }
+
+                                return false;
+                            });
                         }
 
                         var $options = $list.find('a');
