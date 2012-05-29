@@ -339,8 +339,10 @@
             var xCoord = mapPos.left - position.left;
             var yCoord = mapPos.top - position.top;
 
-            xCoord = this.$el.outerWidth()/2 + xCoord - (node.outerWidth()/2);
-            yCoord = this.$el.outerHeight()/2 + yCoord - (node.outerHeight()/2);
+            var $nodeDimensions = node.find('.lb-node');
+
+            xCoord = this.$el.outerWidth()/2 + xCoord - ($nodeDimensions.outerWidth()/2) - parseInt($nodeDimensions.css('margin-left'));
+            yCoord = this.$el.outerHeight()/2 + yCoord - ($nodeDimensions.outerHeight()/2) - parseInt($nodeDimensions.css('margin-top'));
 
             this.mapToCoords(xCoord, yCoord);
         },
