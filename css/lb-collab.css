@@ -139,6 +139,10 @@
     color           : #fff;
     display         : block;
     text-decoration : none;
+}
+
+.directors-box .option-list a,
+.genres-box .option-list a {
     text-transform  : capitalize;
 }
 
@@ -189,15 +193,15 @@
 }
 
 .node-for-decade>.lb-network-node>.children-nodes>.collab-selected>.network-node {
-    border      : #8DC63F 3px solid;
+    border      : #8DC63F 1px solid;
 }
 
 .node-for-director>.lb-network-node>.children-nodes>.collab-selected>.network-node {
-    border      : #ED1C24 3px solid;
+    border      : #ED1C24 1px solid;
 }
 
 .node-for-genre>.lb-network-node>.children-nodes>.collab-selected>.network-node {
-    border      : #27AAE1 3px solid;
+    border      : #27AAE1 1px solid;
 }
 
 .node-for-decade>.lb-network-node>.children-nodes>.collab-selected>.network-node>.actions>.set-decade,
@@ -225,9 +229,9 @@
 .return-parent {
     background  : #414042;
     float       : right;
-    height      : 40px;
+    height      : 46px;
     text-transform : uppercase;
-    width       : 40px;
+    width       : 46px;
 }
 
 .set-decade {
@@ -290,9 +294,16 @@
     width       : 100%;
 }
 
+.lb-trailing-node>.network-node>.node-info-left-side img {
+    height      : 170px;
+    margin      : -42px 0 0 -30px;
+    width       : 120px;
+}
+
 .concept-2 .collab-selected>.network-node>.node-info-left-side {
     float       : left;
     margin      : 0 10px 10px 0;
+    padding     : 4px 0 0;
     position    : relative;
     width       : 100px;
 }
@@ -300,7 +311,15 @@
 .collab-selected>.network-node>.text,
 .collab-selected>.network-node>.actions {
     display     : block;
-    max-height  : 240px;
+}
+
+.collab-selected>.network-node>.text>h4 {
+    margin      : 0;
+    padding     : 0 0 20px;
+}
+
+.collab-selected>.network-node>.text>.description {
+    max-height  : 220px;
     overflow    : auto;
 }
 
