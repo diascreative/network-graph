@@ -34,12 +34,12 @@
             $('#network').lbNetworkGraph({
                 initialNodeID : 'centralNode',
                 jsonURL         : './json-data/[%id%].json',
-                distanceNodes : 150,
+                distanceNodes : 180,
                 defaultImageReplace : './img/bfi-logo.png',
                 defaultImageWatch : '.thumbnail',
                 returnToParent : false,
                 distanceIncrement : 1.5,
-                angleLimit : 200,
+                angleLimit : 260,
                 lineWidth : 3,
                 showChildren : false,
                 templates : {
@@ -294,6 +294,8 @@
                 else
                     map.options.lineColour = '#27AAE1';
 
+                $wheel.removeClass('director-selected decade-selected genre-selected').addClass(option + '-selected');
+
                 var startNode = map.getStartNode();
                 var nodeName = '.' + option + 's-box, .' + option + '-box';
 
@@ -317,6 +319,7 @@
 
                     map.getChildren(startNode);
                 } else {
+                    $wheel.removeClass('director-selected decade-selected genre-selected');
                     map.removeChildren(startNode);
                     map.centerToNode(startNode);
                 }

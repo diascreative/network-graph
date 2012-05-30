@@ -40,19 +40,37 @@
 }
 
 .starting-node {
-    height          : 187px;
-    margin          : -94px 0 0 -94px;
+    height          : 182px;
+    margin          : -91px 0 0 -91px;
     position        : absolute;
-    width           : 187px;
+    width           : 182px;
 }
 
 .wheel-background {
     background      : url(../img/wheel.png) 0 0 no-repeat;
-    height          : 187px;
+    height          : 182px;
     left            : 0;
     position        : absolute;
     top             : 0;
-    width           : 187px;
+    width           : 183px;
+}
+
+.wheel-background img {
+    height          : 182px;
+    opacity         : 0.01;
+    width           : 183px;
+}
+
+.wheel-background.director-selected {
+    background-position: 0 -182px;
+}
+
+.wheel-background.decade-selected {
+    background-position: 0 -364px;
+}
+
+.wheel-background.genre-selected {
+    background-position: 0 -546px;
 }
 
 #directors-choice {
@@ -86,10 +104,12 @@
 
 .selection-box {
     background      : #ED1C24;
+    -webkit-border-radius: 10px;
+    border-radius   : 10px;
     cursor          : default;
     max-height      : 356px;
     margin          : -40px 0 0 -90px;
-    padding         : 7px 6px;
+    padding         : 8px 8px 10px;
     position        : absolute;
     width           : 235px;
 }
@@ -99,7 +119,6 @@
 .genre-box {
     background      : #ED1C24;
     -webkit-border-radius: 186px;
-    -moz-border-radius: 186px;
     border-radius   : 186px;
     height          : 186px;
     margin          : -93px 0 0 -93px;
@@ -124,14 +143,21 @@
 }
 
 .selection-box input {
-    border          : solid 1px #777;
+    background      : #fff url(../img/search.png) 4px 4px no-repeat;
+    border          : solid 1px #C5C7C9;
+    -webkit-border-radius: 4px;
+    border-radius   : 4px;
+    color           : #BCBEC0;
     margin          : 0 0 10px;
     outline         : none;
-    padding         : 4px 5px 3px;
-    width           : 220px;
+    padding         : 2px 5px 2px 20px;
+    width           : 206px;
 }
 
 .option-list {
+    font-size       : 12px;
+    font-weight     : bold;
+    line-height     : 16px;
     margin          : 0 30px 0 0;
 }
 
@@ -146,16 +172,19 @@
     text-transform  : capitalize;
 }
 
-.option-list a:hover {
+.option-list a:hover,
+.option-list a:focus {
     background      : #fff;
     color           : #ED1C24;
 }
 
-.decades-box a:hover {
+.decades-box a:hover,
+.decades-box a:focus {
     color           : #8DC63F;
 }
 
-.genres-box a:hover{
+.genres-box a:hover,
+.genres-box a:focus {
     color           : #27AAE1;
 }
 
@@ -212,38 +241,38 @@
 
 .set-decade, .set-director,
 .set-genre, .return-parent {
-    background  : #8DC63F;
-    -webkit-border-radius: 80px;
-    -moz-border-radius: 80px;
-    border-radius: 80px;
-    border       : none;
+    background  : url(../img/buttons.png) 6px 0 no-repeat;
+    border      : none;
     color       : #fff;
     display     : inline-block;
     font-size   : 10px;
-    height      : 80px;
+    height      : 97px;
     margin-right : 16px;
+    overflow: hidden;
+    padding     : 10px 16px 10px 10px;
     vertical-align  : top;
-    width       : 80px;
+    width       : 93px;
 }
 
 .return-parent {
     background  : #414042;
+    -webkit-border-radius: 80px;
+    -moz-border-radius: 80px;
+    border-radius: 80px;
     float       : right;
     height      : 46px;
+    padding: 0;
     text-transform : uppercase;
     width       : 46px;
 }
 
 .set-decade {
+    background-position : -93px 0;
     font-size   : 24px
 }
 
-.set-director {
-    background  : #ED1C24;
-}
-
 .set-genre {
-    background  : #27AAE1;
+    background-position : -180px 0;
 }
 
 .network-node .text,
