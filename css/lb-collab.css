@@ -1,4 +1,5 @@
 .lb-network-node {
+    font-family : "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
     z-index     : 2;
 }
 
@@ -137,9 +138,9 @@
 }
 
 .list-container {
-    max-height      : 320px;
+    max-height      : 220px;
     min-height      : 100px;
-    overflow        : hidden;
+    overflow        : auto;
 }
 
 .selection-box input {
@@ -188,27 +189,20 @@
     color           : #27AAE1;
 }
 
-.scroll-button {
-    background      : url(../img/scroll-u.png) 0 0 no-repeat;
-    height          : 18px;
-    overflow        : hidden;
-    position        : absolute;
-    right           : 8px;
-    text-indent     : 20px;
-    top             : 42px;
-    white-space     : nowrap;
-    width           : 18px;
-    z-index         : 2;
+::-webkit-scrollbar {
+    height          : 10px;
+    width           : 8px;
 }
 
-.scroll-up {
-    display         : none;
+
+::-webkit-scrollbar-track-piece  {
+    border: 1px solid #fff;
+    -webkit-border-radius: 6px;
 }
 
-.scroll-down {
-    background-image: url(../img/scroll-d.png);
-    bottom          : 8px;
-    top             : auto;
+::-webkit-scrollbar-thumb:vertical {
+    background-color: #fff;
+    -webkit-border-radius: 6px;
 }
 
 .director-name,
@@ -247,7 +241,7 @@
     display     : inline-block;
     font-size   : 10px;
     height      : 97px;
-    margin-right : 16px;
+    margin-right : 4px;
     overflow: hidden;
     padding     : 10px 16px 10px 10px;
     vertical-align  : top;
@@ -267,12 +261,12 @@
 }
 
 .set-decade {
-    background-position : -93px 0;
+    background-position : -90px 0;
     font-size   : 24px
 }
 
 .set-genre {
-    background-position : -180px 0;
+    background-position : -183px 0;
 }
 
 .network-node .text,
@@ -284,7 +278,7 @@
 .network-node .actions {
     border-top  : 1px solid #fff;
     margin      : 20px 0 0;
-    padding     : 20px 0 0;
+    padding     : 14px 0 20px;
 }
 
 .network-node {
@@ -310,8 +304,8 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#a6000000',GradientType=1 );
     color       : #fff;
     margin      : -80px -60px 0;
-    width       : 400px;
-    padding     : 20px;
+    width       : 522px;
+    padding     : 17px 20px 17px 15px;
 }
 
 .concept-2 .collab-selected>.network-node>.node-info-left-side img {
@@ -332,9 +326,8 @@
 .concept-2 .collab-selected>.network-node>.node-info-left-side {
     float       : left;
     margin      : 0 10px 10px 0;
-    padding     : 4px 0 0;
     position    : relative;
-    width       : 100px;
+    width       : 130px;
 }
 
 .collab-selected>.network-node>.text,
@@ -343,12 +336,26 @@
 }
 
 .collab-selected>.network-node>.text>h4 {
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 24px;
     margin      : 0;
-    padding     : 0 0 20px;
+    padding     : 0;
+}
+
+.collab-selected>.network-node>.text>h3 {
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+    margin      : 0;
+    padding     : 2px 0 15px;
 }
 
 .collab-selected>.network-node>.text>.description {
-    max-height  : 220px;
+    font-size   : 11px;
+    line-height : 16px;
+    max-height  : 322px;
+    padding     : 0 10px 0 0;
     overflow    : auto;
 }
 
