@@ -1,5 +1,17 @@
+@font-face {
+    font-family: 'AvantGardeCERegular';
+    src: url('./fonts/itc_avant_garde_ce_gothic_book-webfont.eot');
+    src: url('./fonts/itc_avant_garde_ce_gothic_book-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/itc_avant_garde_ce_gothic_book-webfont.woff') format('woff'),
+         url('./fonts/itc_avant_garde_ce_gothic_book-webfont.ttf') format('truetype'),
+         url('./fonts/itc_avant_garde_ce_gothic_book-webfont.svg#AvantGardeCERegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 .lb-network-node {
-    font-family : "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+    font-family : "Avant Garde", Avantgarde, AvantGardeCERegular, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
     z-index     : 2;
 }
 
@@ -119,12 +131,13 @@
 .decade-box,
 .genre-box {
     background      : #ED1C24;
-    -webkit-border-radius: 186px;
-    border-radius   : 186px;
-    height          : 186px;
+    -webkit-border-radius: 146px;
+    border-radius   : 146px;
+    height          : 146px;
     margin          : -93px 0 0 -93px;
+    padding: 20px;
     position        : absolute;
-    width           : 186px;
+    width           : 146px;
 }
 
 .decades-box,
@@ -209,10 +222,16 @@
 .decade-name,
 .genre-name {
     color           : #fff;
+    font-size: 18px;
+    font-weight     : bold;
     margin-top      : 40%;
     position        : absolute;
     text-align      : center;
-    width           : 186px;
+    width           : 146px;
+}
+
+.decade-name {
+    font-size: 54px;
 }
 
 .node-for-decade>.lb-network-node>.children-nodes>.collab-selected>.network-node {
@@ -240,6 +259,7 @@
     color       : #fff;
     display     : inline-block;
     font-size   : 10px;
+    font-weight : bold;
     height      : 97px;
     margin-right : 4px;
     overflow: hidden;
@@ -309,12 +329,13 @@
 }
 
 .concept-2 .collab-selected>.network-node>.node-info-left-side img {
+    border: 1px solid #fff;
     cursor      : default;
     display     : block;
     height      : auto;
     margin      : 0 0 10px;
     position    : relative;
-    width       : 100%;
+    width       : 128px;
 }
 
 .lb-trailing-node>.network-node>.node-info-left-side img {
@@ -392,6 +413,21 @@
 }
 
 /* controls */
+.collab-fit,
+.collab-fit-back {
+    background  : #369;
+    bottom      : 20px;
+    color       : #fff;
+    cursor      : pointer;
+    font-size   : 20px;
+    line-height : 16px;
+    height      : 20px;
+    position    : fixed;
+    right       : 20px;
+    text-align  : center;
+    width       : 20px;
+    z-index		: 100;	
+}
 
 .collab-map-zoom-in, .collab-map-zoom-out {
     background  : #369;
@@ -407,6 +443,7 @@
     width       : 20px;
 }
 
+.collab-fit,
 .collab-map-zoom-in {
     right       : 50px;
 }
