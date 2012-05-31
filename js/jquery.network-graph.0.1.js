@@ -56,6 +56,7 @@
             variation       : 120,
             lineWidth       : 6,
             lineWidthSelected : 3,
+            enableZoom		: false,
             className       : {
                     'node'      : 'lb-network-node',
                     'nodeHover' : 'lb-node-hover',
@@ -133,7 +134,7 @@
             //
             this.map = $('<div class="collab-map" />')
                             .appendTo(this.$el)
-                            .css({ height : '9999px', position : 'absolute', width : '9999px' });
+                            .css({ height : '9999px', position : 'absolute', width : '9999px', 'transform-origin' : '0 0', '-webkit-transform-origin' : '0 0', '-moz-transform-origin' : '0 0' });
 
 
             var raphaelRandomID = 'raphael-rnd-num-' + ( Math.floor(Math.random()*10000000) ); // each canvas requires a unique ID
@@ -159,47 +160,20 @@
 
             // controls
             //
-/*
-            // zoom in on double click
-            this.map.dblclick((function(collabMap){ return function(e) {
-                                    e.preventDefault();
-
-                                    var center = collabMap._mouseCoords(e, $(this));
-
-                    				var x = (collabMap.$el.width()/2) - center.x;
-                    				var y = (collabMap.$el.height()/2) - center.y;
-
-                                    collabMap.zoom('in', [x, y]);
-                                } })(this));
-
-            // zoom out on double right click
-            this.map.contextmenu((function(collabMap){ return function(e) {
-                                    var rightClickTimeN = new Date();
-
-                                    if( collabMap.rightClickTimer && rightClickTimeN - collabMap.rightClickTimer < 200 ) {
-                                        var center = collabMap._mouseCoords(e, $(this));
-
-                        				var x = (collabMap.$el.width()/2) - center.x;
-                        				var y = (collabMap.$el.height()/2) - center.y;
-
-                                        collabMap.zoom('out', [x, y]);
-                                    } else
-                                        collabMap.rightClickTimer = rightClickTimeN;
-
-                                    return false;                                    
-                                } })(this));
-*/
-            this.zoomIn = $('<div class="collab-map-zoom-in">+</div>')
-                                .appendTo(this.$el)
-                                .click((function(collabMap){ return function() {
-                                    collabMap.zoom('in');
-                                } })(this));
-
-            this.zoomOut = $('<div class="collab-map-zoom-out">-</div>')
-                                .appendTo(this.$el)
-                                .click((function(collabMap){ return function() {
-                                    collabMap.zoom('out');
-                                } })(this));
+            
+            if( this.options.enableZoom ) {
+	            this.zoomIn = $('<div class="collab-map-zoom-in">+</div>')
+	                                .appendTo(this.$el)
+	                                .click((function(collabMap){ return function() {
+	                                    collabMap.zoom('in');
+	                                } })(this));
+	
+	            this.zoomOut = $('<div class="collab-map-zoom-out">-</div>')
+	                                .appendTo(this.$el)
+	                                .click((function(collabMap){ return function() {
+	                                    collabMap.zoom('out');
+	                                } })(this));
+	        }
 
 
             // we want to start with a centered map

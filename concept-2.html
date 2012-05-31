@@ -6,6 +6,8 @@
         <link rel="stylesheet" href="./css/lb-collab.css" type="text/css" />
     </head>
     <body>
+    	<div class="collab-fit">+</div>
+    	<div class="collab-fit-back">-</div>
         <div id="network" class="concept-2"></div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -272,6 +274,58 @@
                     var map = $('#network').data('lbNetworkGraph');
                     map.removeChildren($node);
                 }
+            });
+            
+            $('.collab-fit').click(function() {
+	            var map = $('#network').data('lbNetworkGraph');
+	            var startNode = map.getStartNode();
+	            var offset = startNode.offset();
+	            var minH = offset.left,
+	            	maxH = offset.left,
+	            	minV = offset.top,
+	            	maxV = offset.top;
+
+	            var $nodes = startNode.find('.lb-node');
+	            
+	            $nodes.each(function() {
+		            var nOffset = $(this).offset();
+
+		            minH = Math.min(minH, nOffset.left);
+		            maxH = Math.max(maxH, nOffset.left);
+		            minV = Math.min(minV, nOffset.top);
+		            maxV = Math.max(maxV, nOffset.top);
+	            });
+	            
+	            var tWidth	= maxH - minH;
+	            var tHeight = maxV - minV;
+	            
+	            tWidth  += 500; // padding
+	            tHeight += 500; // padding
+
+	            var hArea = $('#network').width();
+	            var vArea = $('#network').height();
+	            
+	            var vRatio = hArea/tHeight,
+	            	hRatio = vArea/tWidth,
+	            	ratio  = Math.min(vRatio, hRatio);
+
+	            var centerX = ( ( map.map.position().left - minH - (tWidth/2)  ) * ratio ) + map.$el.width()/2,
+	            	centerY = ( ( map.map.position().top  - minV - (tHeight/2) ) * ratio ) + map.$el.height()/2;
+
+	            // scale to fit
+                var coords = map.map.offset(),
+                	fx		= (ratio*coords.left),
+                	fy		= (ratio*coords.top),
+                	xCoords = fx-coords.left,
+                	yCoords = fy-coords.top;
+
+				map.map.transition({ x : xCoords, y : yCoords, scale : ratio*map.scaleSize(),
+							complete: function() { 
+								$(this).css({ left : fx, top : fy })
+									   .transition({ x : 0, y : 0, duration : 1 })
+									   .animate({ left : centerX, top : centerY }, 1000);
+							}
+						});
             });
 
             $('#network').on('mousedown', 'button.change-relations', function(e) {
