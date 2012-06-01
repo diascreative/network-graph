@@ -412,22 +412,104 @@
     color       : #fff;
 }
 
-/* controls */
-.collab-fit,
-.collab-fit-back {
-    background  : #369;
-    bottom      : 20px;
-    color       : #fff;
-    cursor      : pointer;
-    font-size   : 20px;
-    line-height : 16px;
-    height      : 20px;
-    position    : fixed;
-    right       : 20px;
-    text-align  : center;
-    width       : 20px;
-    z-index		: 100;	
+#logo {
+	background: url(../img/bfi.png) 0 0 no-repeat;
+	height: 137px;
+	left: 20px;
+	overflow: hidden;
+	position: fixed;
+	text-indent: 92px;
+	top: 20px;
+	white-space: nowrap;
+	width: 89px;
+	z-index: 20;
 }
+
+#large-blue {
+	background: url(../img/large-blue.png) 0 0 no-repeat;
+	bottom: 20px;
+	height: 70px;
+	left: 20px;
+	overflow: hidden;
+	position: fixed;
+	text-indent: 122px;
+	white-space: nowrap;
+	width: 120px;
+	z-index: 20;
+}
+
+#large-blue:hover {
+	opacity: 0.6;
+}
+
+/* controls */
+#controls {
+	bottom: 20px;
+	position: fixed;
+	right: 20px;
+	z-index: 20;
+}
+
+#controls a {
+	background: #414042;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    color: #fff;
+    float: left;
+    font-size: 9px;
+    line-height: 50px;
+	height: 50px;
+	margin: 0 10px 0 0;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	width: 50px;
+}
+
+#controls a:hover {
+	opacity: 0.8;
+}
+
+#controls a.selected {
+	cursor: default;
+	opacity: 0.6;
+}
+
+#controls a.social {
+	background : #3C548E;
+	overflow: hidden;
+	text-indent: 52px;
+	white-space: nowrap;
+}
+
+#controls a.social span {
+	background: url(../img/icons.png) 6px 0 no-repeat;
+	display: block;
+	height: 17px;
+	left: 50%;
+	margin: -8px 0 0 -11px;
+	position: absolute;
+	top: 50%;
+	width: 22px;
+}
+
+#controls a.twitter {
+	background-color: #65B5E5;
+}
+
+#controls a.twitter span {
+	background-position: -53px 0;
+}
+
+#controls a.mail {
+	background-color: #4353BC;
+}
+
+#controls a.mail span {
+	background-position: -113px 0;
+}
+
 
 .collab-map-zoom-in, .collab-map-zoom-out {
     background  : #369;
@@ -441,11 +523,6 @@
     right       : 20px;
     text-align  : center;
     width       : 20px;
-}
-
-.collab-fit,
-.collab-map-zoom-in {
-    right       : 50px;
 }
 
 /* */

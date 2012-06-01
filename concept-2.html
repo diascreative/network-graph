@@ -6,8 +6,16 @@
         <link rel="stylesheet" href="./css/lb-collab.css" type="text/css" />
     </head>
     <body>
-    	<div class="collab-fit">+</div>
-    	<div class="collab-fit-back">-</div>
+    	<h1 id="logo">BFI</h1>
+    	<a href="http://largeblue.com" id="large-blue" target="_blank">Prototype by Large Blue</a>
+    	<div id="controls">
+	    	<a href="#" class="collab-fit">View All</a>
+	    	<a href="#" class="collab-fit-back selected">Reset</a>
+	    	<span></span>
+	    	<a href="#" class="social facebook"><span></span>facebook</a>
+	    	<a href="#" class="social twitter"><span></span>twitter</a>
+	    	<a href="#" class="social mail"><span></span>Email</a>
+	    </div>
         <div id="network" class="concept-2"></div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -276,78 +284,94 @@
                 }
             });
             
-            $('.collab-fit').click(function() {
-	            var map = $('#network').data('lbNetworkGraph');
-	            var startNode = map.getStartNode();
-	            var offset = startNode.offset();
-	            var minH = offset.left,
-	            	maxH = offset.left,
-	            	minV = offset.top,
-	            	maxV = offset.top;
+            $('.collab-fit').click(function(e) {
+            	e.preventDefault();
 
-	            var $nodes = startNode.find('.lb-node');
-	            
-	            $nodes.each(function() {
-		            var nOffset = $(this).offset();
+            	var $this = $(this);
+            	
+            	if( !$this.hasClass('selected') ) {
+            		$this.addClass('selected');
+            		$this.siblings('a.selected').removeClass('selected');
 
-		            minH = Math.min(minH, nOffset.left);
-		            maxH = Math.max(maxH, nOffset.left);
-		            minV = Math.min(minV, nOffset.top);
-		            maxV = Math.max(maxV, nOffset.top);
-	            });
-	            
-	            var tWidth	= maxH - minH;
-	            var tHeight = maxV - minV;
-	            
-	            tWidth  += 500; // padding
-	            tHeight += 500; // padding
-
-	            var hArea = $('#network').width();
-	            var vArea = $('#network').height();
-	            
-	            var vRatio = hArea/tHeight,
-	            	hRatio = vArea/tWidth,
-	            	ratio  = Math.min(vRatio, hRatio);
-
-	            // grab the final coordinates of where we should end up
-	            // with a centered fit
-	            var centerX = ( ( map.map.position().left - minH - (tWidth/2)  ) * ratio ) + map.$el.width()/2,
-	            	centerY = ( ( map.map.position().top  - minV - (tHeight/2) ) * ratio ) + map.$el.height()/2;
-
-	            // scale to fit
-                var coords = map.map.offset(),
-                	xCoords = centerX-coords.left,
-                	yCoords = centerY-coords.top;
-
-				map.map.data({ 'oldCoords' : coords, 'ratio' : ratio })
-					   .transition({ x : xCoords, y : yCoords, scale : ratio*map.scaleSize(), duration : 800,
-							complete: function() { 
-
-								$(this).css({ left : centerX, top : centerY })
-									   .transition({ x : 0, y : 0, duration : 1 })
-							}
-						});
+		            var map = $('#network').data('lbNetworkGraph');
+		            var startNode = map.getStartNode();
+		            var offset = startNode.offset();
+		            var minH = offset.left,
+		            	maxH = offset.left,
+		            	minV = offset.top,
+		            	maxV = offset.top;
+	
+		            var $nodes = startNode.find('.lb-node');
+		            
+		            $nodes.each(function() {
+			            var nOffset = $(this).offset();
+	
+			            minH = Math.min(minH, nOffset.left);
+			            maxH = Math.max(maxH, nOffset.left);
+			            minV = Math.min(minV, nOffset.top);
+			            maxV = Math.max(maxV, nOffset.top);
+		            });
+		            
+		            var tWidth	= maxH - minH;
+		            var tHeight = maxV - minV;
+		            
+		            tWidth  += 500; // padding
+		            tHeight += 500; // padding
+	
+		            var hArea = $('#network').width();
+		            var vArea = $('#network').height();
+		            
+		            var vRatio = hArea/tHeight,
+		            	hRatio = vArea/tWidth,
+		            	ratio  = Math.min(vRatio, hRatio);
+	
+		            // grab the final coordinates of where we should end up
+		            // with a centered fit
+		            var centerX = ( ( map.map.position().left - minH - (tWidth/2)  ) * ratio ) + map.$el.width()/2,
+		            	centerY = ( ( map.map.position().top  - minV - (tHeight/2) ) * ratio ) + map.$el.height()/2;
+	
+		            // scale to fit
+	                var coords = map.map.offset(),
+	                	xCoords = centerX-coords.left,
+	                	yCoords = centerY-coords.top;
+	
+					map.map.data({ 'oldCoords' : coords, 'ratio' : ratio })
+						   .transition({ x : xCoords, y : yCoords, scale : ratio*map.scaleSize(), duration : 400,
+								complete: function() { 
+	
+									$(this).css({ left : centerX, top : centerY, x : 0, y : 0 });
+								}
+							});
+				}
             });
 
-            $('.collab-fit-back').click(function() {
-	            var map = $('#network').data('lbNetworkGraph');
-	            var $current = map.currentNode();
+            $('.collab-fit-back').click(function(e) {
+            	e.preventDefault();
 
-	            var ratio = 1/map.map.css('scale');
+            	var $this = $(this);
+            	
+            	if( !$this.hasClass('selected') ) {
+            		$this.addClass('selected');
+            		$this.siblings('a.selected').removeClass('selected');
 
-	            // scale to fit
-                var coords = map.map.offset(),
-                	xCoords = map.map.data('oldCoords').left - coords.left,
-                	yCoords = map.map.data('oldCoords').top - coords.top;
-
-				map.map.transition({ x : xCoords, y : yCoords, scale : 1, duration : 1200,
-							complete: function() { 
-
-								$(this).css({ left : map.map.data('oldCoords').left, top : map.map.data('oldCoords').top })
-									   .transition({ x : 0, y : 0, duration : 1 });
-
-							}
-						});
+		            var map = $('#network').data('lbNetworkGraph');
+		            var $current = map.currentNode();
+	
+		            var ratio = 1/map.map.css('scale');
+	
+		            // scale to fit
+	                var coords = map.map.offset(),
+	                	xCoords = map.map.data('oldCoords').left - coords.left,
+	                	yCoords = map.map.data('oldCoords').top - coords.top;
+	
+					map.map.transition({ x : xCoords, y : yCoords, scale : 1, duration : 400,
+								complete: function() { 
+	
+									$(this).css({ left : map.map.data('oldCoords').left, top : map.map.data('oldCoords').top, x : 0, y : 0 });
+	
+								}
+							});
+				}
             });
 
             $('#network').on('mousedown', 'button.change-relations', function(e) {

@@ -125,14 +125,13 @@ h4 {
 }
 
 #network {
-    background: rgb(238,238,238); /* Old browsers */
-    background: -moz-radial-gradient(center, ellipse cover,  rgba(238,238,238,1) 0%, rgba(204,204,204,1) 100%); /* FF3.6+ */
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(204,204,204,1))); /* Chrome,Safari4+ */
-    background: -webkit-radial-gradient(center, ellipse cover,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-radial-gradient(center, ellipse cover,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* Opera 12+ */
-    background: -ms-radial-gradient(center, ellipse cover,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* IE10+ */
-    background: radial-gradient(center, ellipse cover,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	background: -moz-radial-gradient(center, ellipse cover,  rgba(209,211,212,1) 0%, rgba(35,31,32,0.95) 100%); /* FF3.6+ */
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(209,211,212,1)), color-stop(100%,rgba(35,31,32,0.95))); /* Chrome,Safari4+ */
+	background: -webkit-radial-gradient(center, ellipse cover,  rgba(209,211,212,1) 0%,rgba(35,31,32,0.95) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-radial-gradient(center, ellipse cover,  rgba(209,211,212,1) 0%,rgba(35,31,32,0.95) 100%); /* Opera 12+ */
+	background: -ms-radial-gradient(center, ellipse cover,  rgba(209,211,212,1) 0%,rgba(35,31,32,0.95) 100%); /* IE10+ */
+	background: radial-gradient(center, ellipse cover,  rgba(209,211,212,1) 0%,rgba(35,31,32,0.95) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d1d3d4', endColorstr='#f2231f20',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
     border      : solid 1px #ccc;
     font-size   : 14px;
     height      : 100%;
