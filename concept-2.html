@@ -11,7 +11,7 @@
     	<div id="controls">
 	    	<a href="#" class="collab-fit">View All</a>
 	    	<a href="#" class="collab-fit-back selected">Reset</a>
-	    	<span></span>
+	    	<span class="sep"></span>
 	    	<a href="#" class="social facebook"><span></span>facebook</a>
 	    	<a href="#" class="social twitter"><span></span>twitter</a>
 	    	<a href="#" class="social mail"><span></span>Email</a>
@@ -57,9 +57,9 @@
                                     '<div class="node-info-left-side"><img class="thumbnail" src="http://filmstore.bfi.org.uk/acatalog/[%image%]" /><div class="film-info"></div></div>' +
                                     '<div class="text"><h4>[%title%]</h4><h3></h3><div class="description"><p>[%description%]</p></div></div>' +
                                     '<div class="actions">' + 
-                                        '<button class="change-relations set-decade" rel=""></button>' +
-                                        '<button class="change-relations set-director" rel=""></button>' +
-                                        '<button class="change-relations set-genre" rel=""></button>' +
+                                        '<button class="change-relations set-decade" rel=""><span></span></button>' +
+                                        '<button class="change-relations set-director" rel=""><span></span></button>' +
+                                        '<button class="change-relations set-genre" rel=""><span></span></button>' +
                                         '<button class="return-parent">Close</button></div>' +
                                  '</div>',
                     'centralNode' : '<div class="starting-node">' +
@@ -143,10 +143,15 @@
                                 
                                 var decadeS = decade.toString();
 
-                                decadeBtn.text(decadeS.substring(decadeS.length-2) + 's').attr('rel', 'decades/' + decade);
-                                directorBtn.text(res.Director).attr('rel', 'directors/' + slugText(res.Director));
+                                decadeBtn.attr('rel', 'decades/' + decade).find('span').text(decadeS.substring(decadeS.length-2) + 's');
+                                directorBtn.attr('rel', 'directors/' + slugText(res.Director)).find('span').text(res.Director);
                                 directorBtn.closest('.lb-node').find('>.text>h3').text(res.Director);
-                                genreBtn.text(res.Genre).attr('rel', 'genres/' + slugText(res.Genre));
+                                genreBtn.attr('rel', 'genres/' + slugText(res.Genre)).find('span').text(res.Genre);
+                                
+                                currentNode.find('.set-director span, .set-decade span, .set-genre span').each(function() {
+	                                var $this = $(this);
+	                                $this.css({ marginTop : ((-$this.height()/2) + 4 ) + 'px' }); /* overflow of top of plus sign is 4px */
+                                });
                                 
                                 var info = 'Certificate :' + res.Certificate + '<br />' +
                                            'Year : ' + res.Year + '<br />' +

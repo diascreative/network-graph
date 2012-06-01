@@ -63,6 +63,7 @@
     background      : url(../img/wheel.png) 0 0 no-repeat;
     height          : 182px;
     left            : 0;
+    margin: 2px 0 0 -2px;
     position        : absolute;
     top             : 0;
     width           : 183px;
@@ -254,18 +255,30 @@
 
 .set-decade, .set-director,
 .set-genre, .return-parent {
-    background  : url(../img/buttons.png) 6px 0 no-repeat;
+    background  : url(../img/buttons.png) 0 0 no-repeat;
     border      : none;
     color       : #fff;
     display     : inline-block;
     font-size   : 10px;
     font-weight : bold;
     height      : 97px;
-    margin-right : 4px;
+    margin-right : 10px;
     overflow: hidden;
-    padding     : 10px 16px 10px 10px;
+    padding     : 0;
+    position: relative;
     vertical-align  : top;
-    width       : 93px;
+    width       : 87px;
+}
+
+.set-decade span, .set-director span,
+.set-genre span {
+	display: block;
+	left: 0;
+	margin-top: -0.5em;
+	padding : 0 15px;
+	position	: absolute;
+	right: 6px;
+	top: 50%;
 }
 
 .return-parent {
@@ -273,20 +286,25 @@
     -webkit-border-radius: 80px;
     -moz-border-radius: 80px;
     border-radius: 80px;
-    float       : right;
-    height      : 46px;
+    float: right;
+    height: 46px;
     padding: 0;
     text-transform : uppercase;
-    width       : 46px;
+    width: 46px;
+}
+
+.set-decade:hover, .set-director:hover,
+.set-genre:hover, .return-parent:hover {
+	opacity: 0.6;
 }
 
 .set-decade {
-    background-position : -90px 0;
+    background-position : -93px 0;
     font-size   : 24px
 }
 
 .set-genre {
-    background-position : -183px 0;
+    background-position : -186px 0;
 }
 
 .network-node .text,
@@ -297,6 +315,7 @@
 
 .network-node .actions {
     border-top  : 1px solid #fff;
+    clear		: both;
     margin      : 20px 0 0;
     padding     : 14px 0 20px;
 }
@@ -415,7 +434,7 @@
 #logo {
 	background: url(../img/bfi.png) 0 0 no-repeat;
 	height: 137px;
-	left: 20px;
+	left: 38px;
 	overflow: hidden;
 	position: fixed;
 	text-indent: 92px;
@@ -427,9 +446,9 @@
 
 #large-blue {
 	background: url(../img/large-blue.png) 0 0 no-repeat;
-	bottom: 20px;
+	bottom: 40px;
 	height: 70px;
-	left: 20px;
+	left: 52px;
 	overflow: hidden;
 	position: fixed;
 	text-indent: 122px;
@@ -444,9 +463,9 @@
 
 /* controls */
 #controls {
-	bottom: 20px;
+	bottom: 42px;
 	position: fixed;
-	right: 20px;
+	right: 35px;
 	z-index: 20;
 }
 
@@ -469,6 +488,15 @@
 
 #controls a:hover {
 	opacity: 0.8;
+}
+
+#controls span.sep {
+	background: #616061;
+	display: block;
+	float: left;
+	height: 50px;
+	margin: 0 10px 0 0;
+	width: 1px;
 }
 
 #controls a.selected {
