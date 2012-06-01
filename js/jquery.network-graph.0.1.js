@@ -292,7 +292,7 @@
          * {node} jQuery object for node
          * 
          */
-        centerToNode : function(node) {
+        getNodeCoords : function(node) {
             // get the coords relative to the node's parent
             // we use data('coords') because this is the future position ( after animation )
             //
@@ -317,8 +317,12 @@
 
             xCoord = this.$el.outerWidth()/2 + xCoord - ($nodeDimensions.outerWidth()/2) - parseInt($nodeDimensions.css('margin-left'));
             yCoord = this.$el.outerHeight()/2 + yCoord - ($nodeDimensions.outerHeight()/2) - parseInt($nodeDimensions.css('margin-top'));
-
-            this.mapToCoords(xCoord, yCoord);
+            
+            return { left : xCoord, top : yCoord };
+        },
+        centerToNode : function(node) {
+        	var coords = this.getNodeCoords(node);
+            this.mapToCoords(coords.left, coords.top);
         },
         /**
          * Select a specific node

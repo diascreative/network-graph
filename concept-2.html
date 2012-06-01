@@ -12,7 +12,7 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script type="text/javascript">
-            !window.jQuery && document.write('<script src="./js/jquery-1.7.2.min.js"><\/script>');
+            !window.jQuery && document.write('<script src="./js/jquery.1.7.1.min.js"><\/script>');
         </script>
 
         <!-- this custom query-ui only contains the draggable and easing functions -->
@@ -309,21 +309,47 @@
 	            	hRatio = vArea/tWidth,
 	            	ratio  = Math.min(vRatio, hRatio);
 
+	            // grab the final coordinates of where we should end up
+	            // with a centered fit
 	            var centerX = ( ( map.map.position().left - minH - (tWidth/2)  ) * ratio ) + map.$el.width()/2,
 	            	centerY = ( ( map.map.position().top  - minV - (tHeight/2) ) * ratio ) + map.$el.height()/2;
 
 	            // scale to fit
                 var coords = map.map.offset(),
-                	fx		= (ratio*coords.left),
-                	fy		= (ratio*coords.top),
+                	xCoords = centerX-coords.left,
+                	yCoords = centerY-coords.top;
+
+				map.map.data({ 'oldCoords' : coords, 'ratio' : ratio })
+					   .transition({ x : xCoords, y : yCoords, scale : ratio*map.scaleSize(), duration : 800,
+							complete: function() { 
+
+								$(this).css({ left : centerX, top : centerY })
+									   .transition({ x : 0, y : 0, duration : 1 })
+							}
+						});
+            });
+
+            $('.collab-fit-back').click(function() {
+	            var map = $('#network').data('lbNetworkGraph');
+	            var $current = map.currentNode();
+
+	            var ratio = 1/map.map.css('scale');
+
+	            // scale to fit
+                var coords = map.getNodeCoords($current),
+                	fx		= coords.left / map.map.data('ratio'),
+                	fy		= coords.top / map.map.data('ratio'),
                 	xCoords = fx-coords.left,
                 	yCoords = fy-coords.top;
 
-				map.map.transition({ x : xCoords, y : yCoords, scale : ratio*map.scaleSize(),
+				map.map.transition({ x : xCoords, y : yCoords, scale : 1, duration : 1200,
 							complete: function() { 
-								$(this).css({ left : fx, top : fy })
+
+								$(this)//.css({ left : fx, top : fy })
 									   .transition({ x : 0, y : 0, duration : 1 })
-									   .animate({ left : centerX, top : centerY }, 1000);
+									   .delay(300)
+									   .animate({ left : map.map.data('oldCoords').left, top : map.map.data('oldCoords').top }, 1000);
+
 							}
 						});
             });
