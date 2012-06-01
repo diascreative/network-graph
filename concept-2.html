@@ -336,19 +336,15 @@
 	            var ratio = 1/map.map.css('scale');
 
 	            // scale to fit
-                var coords = map.getNodeCoords($current),
-                	fx		= coords.left / map.map.data('ratio'),
-                	fy		= coords.top / map.map.data('ratio'),
-                	xCoords = fx-coords.left,
-                	yCoords = fy-coords.top;
+                var coords = map.map.offset(),
+                	xCoords = map.map.data('oldCoords').left - coords.left,
+                	yCoords = map.map.data('oldCoords').top - coords.top;
 
 				map.map.transition({ x : xCoords, y : yCoords, scale : 1, duration : 1200,
 							complete: function() { 
 
-								$(this)//.css({ left : fx, top : fy })
-									   .transition({ x : 0, y : 0, duration : 1 })
-									   .delay(300)
-									   .animate({ left : map.map.data('oldCoords').left, top : map.map.data('oldCoords').top }, 1000);
+								$(this).css({ left : map.map.data('oldCoords').left, top : map.map.data('oldCoords').top })
+									   .transition({ x : 0, y : 0, duration : 1 });
 
 							}
 						});
