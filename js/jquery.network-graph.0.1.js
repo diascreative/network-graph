@@ -296,30 +296,32 @@
             // get the coords relative to the node's parent
             // we use data('coords') because this is the future position ( after animation )
             //
-            var position = node.data('coords');
+            var $nodeDimensions = node.find('.lb-node'),
+            	scaleSize = this.scaleSize(),
+            	position = node.data('coords');
+
+        	position.left = position.left * scaleSize,
+        	position.top = position.top * scaleSize;
 
             if( node.data('parent') ) {
                 // add the parent's offset if it has one
                 var parentPos = node.data('parent').offset();
                 position.left += parentPos.left;
-                position.top += parentPos.top;
+                position.top  += parentPos.top;
             } else {
                 // always use offset for initial node
-                position = node.offset();
+		        position = node.offset();
             }
 
             var mapPos = this.map.offset();
 
             var xCoord = mapPos.left - position.left;
-            var yCoord = mapPos.top - position.top;
+            var yCoord = mapPos.top  - position.top;
 
-            var $nodeDimensions = node.find('.lb-node'),
-            	scaleSize = this.scaleSize();
+            xCoord = (this.$el.outerWidth()/2)  + xCoord - ( ($nodeDimensions.outerWidth()/2)  + parseInt($nodeDimensions.css('margin-left')) ) * scaleSize;
+            yCoord = (this.$el.outerHeight()/2) + yCoord - ( ($nodeDimensions.outerHeight()/2) + parseInt($nodeDimensions.css('margin-top')) ) * scaleSize;
 
-            xCoord = this.$el.outerWidth()/2 + xCoord - ($nodeDimensions.outerWidth()/2) - parseInt($nodeDimensions.css('margin-left'));
-            yCoord = this.$el.outerHeight()/2 + yCoord - ($nodeDimensions.outerHeight()/2) - parseInt($nodeDimensions.css('margin-top'));
-
-            return { left : xCoord/scaleSize, top : yCoord/scaleSize };
+            return { left : xCoord, top : yCoord };
         },
         centerToNode : function(node) {
         	var coords = this.getNodeCoords(node);
@@ -834,7 +836,7 @@
             return ( this.moz ? 1 : (this.nodes.css('scale') || 1) );
         },
         scaleSize : function() {
-            return this.nodes.css('scale');
+            return this.map.css('scale');
         },
         mapToCoords : function(xCoord, yCoord) {
             // Lets move around at the same speed all the time instead

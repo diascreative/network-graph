@@ -278,11 +278,12 @@
     color       : #fff;
 	display: block;
 	left: 0;
-	padding : 0 15px;
+	padding : 0 12px;
 	position	: absolute;
 	right: 6px;
 	text-align: center;
 	top: 14px;
+	word-break: break-all;
 }
 
 .return-parent {
