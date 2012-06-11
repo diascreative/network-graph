@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Network Graph</title>
+        <title>BFI Visualisation Tool</title>
         <link rel="stylesheet" href="./css/style.css" type="text/css" />
         <link rel="stylesheet" href="./css/lb-collab.css" type="text/css" />
+
+        <meta property="og:title" content="Come and check out the BFI Visualisation Tool and discover a destination for everything connected to film" />
+        <meta property="og:image" content="http://pire.largeblue.net/bfi/img/facebook.png" />
     </head>
     <body>
     	<h1 id="logo">BFI</h1>
     	<a href="http://largeblue.com" id="large-blue" target="_blank">Prototype by Large Blue</a>
     	<div id="controls">
 	    	<a href="#" class="collab-fit">View All</a>
-	    	<a href="#" class="collab-fit-back selected">Reset</a>
+	    	<a href="#" class="collab-fit-back selected">Back</a>
+	    	<a href="#" class="collab-reset">Reset</a>
 	    	<span class="sep"></span>
-	    	<a href="#" class="social facebook"><span></span>facebook</a>
+	    	<a href="http://www.facebook.com/sharer.php?u=http://pire.largeblue.net/bfi/concept-2.html&t=BFI Visualisation Tool" target="_blank" class="social facebook"><span></span>facebook</a>
 	    	<a href="#" class="social twitter"><span></span>twitter</a>
 	    	<a href="#" class="social mail"><span></span>Email</a>
 	    </div>
@@ -28,17 +32,17 @@
 
         <!-- great little plugin for touch devices ( to allow jquery ui dragging in them -->
         <script src="./js/jquery.ui.touch-punch.min.js"></script>
-        
+
         <script src="./js/jquery.transit.min.js"></script>
-        
+
         <!-- we rely on RaphaelJS to draw the lines between nodes -->
         <script src="./js/raphael-min.js"></script>
 
         <!-- Plugin -->
         <script src="./js/jquery.network-graph.0.1.js"></script>
-        
-        
-        <script src="./js/jquery.mousewheel.js"></script>        
+
+
+        <script src="./js/jquery.mousewheel.js"></script>
 
         <script type="text/javascript">
             $('#network').lbNetworkGraph({
@@ -56,11 +60,11 @@
                     'default' : '<div class="network-node clearfix">' +
                                     '<div class="node-info-left-side"><img class="thumbnail" src="http://filmstore.bfi.org.uk/acatalog/[%image%]" /><div class="film-info"></div></div>' +
                                     '<div class="text"><h4>[%title%]</h4><h3></h3><div class="description"><p>[%description%]</p></div></div>' +
-                                    '<div class="actions">' + 
-                                        '<button class="change-relations set-decade" rel=""><span></span></button>' +
-                                        '<button class="change-relations set-director" rel=""><span></span></button>' +
-                                        '<button class="change-relations set-genre" rel=""><span></span></button>' +
-                                        '<button class="return-parent">Close</button></div>' +
+                                    '<div class="actions">' +
+                                        '<a href="#decade" class="change-relations set-decade" rel=""><span></span></a>' +
+                                        '<a href="#director" class="change-relations set-director" rel=""><span></span></a>' +
+                                        '<a href="#genre" class="change-relations set-genre" rel=""><span></span></a>' +
+                                        '<button class="return-parent">Close</button></button>' +
                                  '</div>',
                     'centralNode' : '<div class="starting-node">' +
                                         '<div>[%text%]</div>' +
@@ -86,7 +90,7 @@
                 }, onSelectNode : function() {
                     var map = $('#network').data('lbNetworkGraph');
                     var currentNode = map.currentNode();
-                    
+
                     var extraInformationTypes = ['default'];
                     var roundNodes = ['genre', 'director', 'decade'];
                     var selectionNodes = ['genres', 'directors', 'decades'];
@@ -140,23 +144,24 @@
                                 }
 
                                 decade = Math.floor(parseInt(decade)/10) * 10;
-                                
+
                                 var decadeS = decade.toString();
 
                                 decadeBtn.attr('rel', 'decades/' + decade).find('span').text(decadeS.substring(decadeS.length-2) + 's');
                                 directorBtn.attr('rel', 'directors/' + slugText(res.Director)).find('span').text(res.Director);
                                 directorBtn.closest('.lb-node').find('>.text>h3').text(res.Director);
                                 genreBtn.attr('rel', 'genres/' + slugText(res.Genre)).find('span').text(res.Genre);
-                                
+
                                 currentNode.find('.set-director span, .set-decade span, .set-genre span').each(function() {
 	                                var $this = $(this);
-	                                $this.css({ marginTop : ((-$this.height()/2) + 4 ) + 'px' }); /* overflow of top of plus sign is 4px */
+	                                var bottom = ( ( $this.parent().height() - parseInt($this.css('top')) ) / 2 ) - ( $this.outerHeight() / 2 );
+	                                $this.css({ marginTop : bottom + 'px' }); /* overflow of top of plus sign is 4px */
                                 });
-                                
+
                                 var info = 'Certificate :' + res.Certificate + '<br />' +
                                            'Year : ' + res.Year + '<br />' +
                                            'Colour : '+ res.Colour;
-                                
+
                                 currentNode.find('.film-info').html(info);
                             }
                         })
@@ -168,27 +173,41 @@
             function slugText(text) {
                 var strip = /[^\w\s-]/g,
                     hyphen = /[-\s]+/g;
-                
+
                 text.toLowerCase();
-        
+
                 var map = {
                   from: 'àáäãâèéëêìíïîòóöôõùúüûñç·/_,:;',
                   to  : 'aaaaaeeeeiiiiooooouuuunc------'
                 };
-        
+
                 for ( var i=0, j=map.from.length; i < j; i++ ) {
                     text = text.replace(new RegExp(map.from.charAt(i), 'g'), map.to.charAt(i));
                 }
-        
+
                 return $.trim(text.replace(strip, '')).toLowerCase().replace(hyphen, '-');
             }
+
+            $('.collab-reset').click(function(e) {
+            	e.preventDefault()
+
+            	var $wheel = $('.wheel-background');
+            	var option = $wheel.data('selected-option');
+
+	            $('#network area[href="#' + option + '"]').mousedown();
+            });
+
+            $('.facebook').click(function(e) {
+            	e.preventDefault();
+	           safari_zend_pop = window.open($(this).attr('href'), 'fb_pop', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=640,height=340');
+            });
 
             $('#network').on('mousedown', 'area', function(e) {
                 e.stopPropagation();
 
                 var option = $(this).attr('href').replace('#', '');
                 var $wheel = $('.wheel-background');
-                
+
                 var angles = {
                     genre    : 60,
                     director : 180,
@@ -232,7 +251,7 @@
                 else
                     map.options.lineColour = '#27AAE1';
 
-                $wheel.removeClass('director-selected decade-selected genre-selected').addClass(option + '-selected');
+                $wheel.removeClass('director-selected decade-selected genre-selected').addClass(option + '-selected').data('selected-option', option);
 
                 var startNode = map.getStartNode();
                 var nodeName = '.' + option + 's-box, .' + option + '-box';
@@ -244,7 +263,7 @@
                     map.setStartAngle(120);
 
                     map.removeChildren(startNode);
-    
+
                     map.onChildrenSet = function() {
                         map.setStartAngle(false);
                         var childNode = startNode.find('.' + option + 's-box').closest('.lb-network-node').last();
@@ -257,7 +276,7 @@
 
                     map.getChildren(startNode);
                 } else {
-                    $wheel.removeClass('director-selected decade-selected genre-selected');
+                    $wheel.removeClass('director-selected decade-selected genre-selected').data('selected-option', '');
                     map.removeChildren(startNode);
                     map.centerToNode(startNode);
                 }
@@ -268,10 +287,10 @@
 
                 var map = $('#network').data('lbNetworkGraph');
                 var currentNode = map.currentNode();
-                
+
                 map.selectNode(currentNode.data('parent'));
                 map.centerToNode(currentNode.data('parent'));
-                
+
             });
 
             $('#network').on('mouseenter', '.thumbnail', function() {
@@ -282,18 +301,18 @@
                 var $node = $(this).closest('.lb-network-node');
                 var isSel = $(this).parent().parent().hasClass('collab-selected');
                 var isTrail = $(this).parent().parent().hasClass('lb-trailing-node');
-                
+
                 if( !isSel && isTrail ) {
                     var map = $('#network').data('lbNetworkGraph');
                     map.removeChildren($node);
                 }
             });
-            
+
             $('.collab-fit').click(function(e) {
             	e.preventDefault();
 
             	var $this = $(this);
-            	
+
             	if( !$this.hasClass('selected') ) {
             		$this.addClass('selected');
             		$this.siblings('a.selected').removeClass('selected');
@@ -305,45 +324,45 @@
 		            	maxH = offset.left,
 		            	minV = offset.top,
 		            	maxV = offset.top;
-	
+
 		            var $nodes = startNode.find('.lb-node');
-		            
+
 		            $nodes.each(function() {
 			            var nOffset = $(this).offset();
-	
+
 			            minH = Math.min(minH, nOffset.left);
 			            maxH = Math.max(maxH, nOffset.left);
 			            minV = Math.min(minV, nOffset.top);
 			            maxV = Math.max(maxV, nOffset.top);
 		            });
-		            
+
 		            var tWidth	= maxH - minH;
 		            var tHeight = maxV - minV;
-		            
+
 		            tWidth  += 500; // padding
 		            tHeight += 500; // padding
-	
+
 		            var hArea = $('#network').width();
 		            var vArea = $('#network').height();
-		            
+
 		            var vRatio = hArea/tHeight,
 		            	hRatio = vArea/tWidth,
 		            	ratio  = Math.min(vRatio, hRatio);
-	
+
 		            // grab the final coordinates of where we should end up
 		            // with a centered fit
 		            var centerX = ( ( map.map.position().left - minH - (tWidth/2)  ) * ratio ) + map.$el.width()/2,
 		            	centerY = ( ( map.map.position().top  - minV - (tHeight/2) ) * ratio ) + map.$el.height()/2;
-	
+
 		            // scale to fit
 	                var coords = map.map.offset(),
 	                	xCoords = centerX-coords.left,
 	                	yCoords = centerY-coords.top;
-	
+
 					map.map.data({ 'oldCoords' : coords, 'ratio' : ratio })
 						   .transition({ x : xCoords, y : yCoords, scale : ratio*map.scaleSize(), duration : 400,
-								complete: function() { 
-	
+								complete: function() {
+
 									$(this).css({ left : centerX, top : centerY, x : 0, y : 0 });
 								}
 							});
@@ -354,32 +373,32 @@
             	e.preventDefault();
 
             	var $this = $(this);
-            	
+
             	if( !$this.hasClass('selected') ) {
             		$this.addClass('selected');
             		$this.siblings('a.selected').removeClass('selected');
 
 		            var map = $('#network').data('lbNetworkGraph');
 		            var $current = map.currentNode();
-	
+
 		            var ratio = 1/map.map.css('scale');
-	
+
 		            // scale to fit
 	                var coords = map.map.offset(),
 	                	xCoords = map.map.data('oldCoords').left - coords.left,
 	                	yCoords = map.map.data('oldCoords').top - coords.top;
-	
+
 					map.map.transition({ x : xCoords, y : yCoords, scale : 1, duration : 400,
-								complete: function() { 
-	
+								complete: function() {
+
 									$(this).css({ left : map.map.data('oldCoords').left, top : map.map.data('oldCoords').top, x : 0, y : 0 });
-	
+
 								}
 							});
 				}
             });
 
-            $('#network').on('mousedown', 'button.change-relations', function(e) {
+            $('#network').on('mousedown', 'a.change-relations', function(e) {
                 var map = $('#network').data('lbNetworkGraph');
                 var $button = $(this);
                 var choice = $button.attr('rel');
@@ -434,7 +453,7 @@
                 setTimeout(function() { map.dragged = false; }, 10);
             });
 
-            
+
             $('#network').on('mouseenter', '.group-node', function() {
                 var map = $('#network').data('lbNetworkGraph');
                 map.options.showChildren = true;
@@ -449,7 +468,7 @@
                 var map = $('#network').data('lbNetworkGraph');
                 var $select = $(this);
                 var startNode = map.getStartNode();
-                
+
                 var $node = $select.closest('.lb-network-node');
                 $node.data('line').remove();
 

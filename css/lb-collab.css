@@ -72,6 +72,7 @@
 .wheel-background img {
     height          : 182px;
     opacity         : 0.01;
+    filter			: alpha(opacity=1);
     width           : 183px;
 }
 
@@ -95,6 +96,7 @@
     position        : absolute;
     top             : 80px;
     opacity         : 0.6;
+	filter : alpha(opacity=60);
     width           : 80px;
 }
 
@@ -113,6 +115,7 @@
     position        : absolute;
     top             : 2px;
     opacity         : 0.1;
+	filter : alpha(opacity=10);
     width           : 157px;
 }
 
@@ -132,13 +135,12 @@
 .decade-box,
 .genre-box {
     background      : #ED1C24;
-    -webkit-border-radius: 146px;
-    border-radius   : 146px;
-    height          : 146px;
+    -webkit-border-radius: 166px;
+    border-radius   : 166px;
+    height          : 166px;
     margin          : -93px 0 0 -93px;
-    padding: 20px;
     position        : absolute;
-    width           : 146px;
+    width           : 166px;
 }
 
 .decades-box,
@@ -225,6 +227,7 @@
     color           : #fff;
     font-size: 18px;
     font-weight     : bold;
+    left: 10px;
     margin-top      : 40%;
     position        : absolute;
     text-align      : center;
@@ -232,7 +235,7 @@
 }
 
 .decade-name {
-    font-size: 54px;
+    font-size: 48px;
 }
 
 .node-for-decade>.lb-network-node>.children-nodes>.collab-selected>.network-node {
@@ -272,13 +275,14 @@
 
 .set-decade span, .set-director span,
 .set-genre span {
+    color       : #fff;
 	display: block;
 	left: 0;
-	margin-top: -0.5em;
 	padding : 0 15px;
 	position	: absolute;
 	right: 6px;
-	top: 50%;
+	text-align: center;
+	top: 14px;
 }
 
 .return-parent {
@@ -295,6 +299,7 @@
 
 .set-decade:hover, .set-director:hover,
 .set-genre:hover, .return-parent:hover {
+	filter : alpha(opacity=60);
 	opacity: 0.6;
 }
 
@@ -458,6 +463,7 @@
 }
 
 #large-blue:hover {
+	filter : alpha(opacity=60);
 	opacity: 0.6;
 }
 
@@ -488,6 +494,7 @@
 
 #controls a:hover {
 	opacity: 0.8;
+	filter : alpha(opacity=80);
 }
 
 #controls span.sep {
@@ -500,8 +507,7 @@
 }
 
 #controls a.selected {
-	cursor: default;
-	opacity: 0.6;
+	display: none;
 }
 
 #controls a.social {

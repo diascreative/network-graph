@@ -2,7 +2,7 @@
  * jQuery Network-Graph
  * - Depends on RaphaelJS to draw the canvas lines
  * - Depends on JQueryUI for dragging and Easing animations
- * 
+ *
  * Templates - any JSON fields you want to show need
  * to be wrapped in [%%] in the template, as below
  *     '<h2>[%title%]</h2>'
@@ -128,13 +128,13 @@
             // as the map is set so it can occupy a large area we
             // will hide the container's overflow
             this.$el.css({ overflow : 'hidden' });
-            
+
             // this.map contains both other layers
             // this is the layer we drag around
             //
             this.map = $('<div class="collab-map" />')
                             .appendTo(this.$el)
-                            .css({ height : '9999px', position : 'absolute', width : '9999px', 'transform-origin' : '0 0', '-webkit-transform-origin' : '0 0', '-moz-transform-origin' : '0 0' });
+                            .css({ height : '99999px', position : 'absolute', width : '99999px', 'transform-origin' : '0 0', '-webkit-transform-origin' : '0 0', '-moz-transform-origin' : '0 0' });
 
 
             var raphaelRandomID = 'raphael-rnd-num-' + ( Math.floor(Math.random()*10000000) ); // each canvas requires a unique ID
@@ -146,7 +146,7 @@
                                 .appendTo(this.map)
                                 .css({ height : '100%', top : '0', left : '0', position : 'absolute' , width : '100%' });
 
-            
+
             // initiate canvas
             this.initiateCanvas(raphaelRandomID);
 
@@ -160,14 +160,14 @@
 
             // controls
             //
-            
+
             if( this.options.enableZoom ) {
 	            this.zoomIn = $('<div class="collab-map-zoom-in">+</div>')
 	                                .appendTo(this.$el)
 	                                .click((function(collabMap){ return function() {
 	                                    collabMap.zoom('in');
 	                                } })(this));
-	
+
 	            this.zoomOut = $('<div class="collab-map-zoom-out">-</div>')
 	                                .appendTo(this.$el)
 	                                .click((function(collabMap){ return function() {
@@ -227,7 +227,7 @@
                             e.preventDefault();
 
                             var $this = $(this);
-            
+
                             if( $this.hasClass('collab-selected') && $this.data('parent') && collabMap.options.returnToParent ) {
                                 // if we're clicking on an already selected node go to its parent
                                 collabMap.selectNode($this.data('parent'));
@@ -280,7 +280,7 @@
         /**
          * Initiatest the canvas element : right now it's using RaphaelJS
          * {string} canvas id to draw on
-         * 
+         *
          */
         initiateCanvas : function(canvasID) {
             // init the canvas
@@ -290,7 +290,7 @@
         /**
          * Centers the map to a specific node
          * {node} jQuery object for node
-         * 
+         *
          */
         getNodeCoords : function(node) {
             // get the coords relative to the node's parent
@@ -313,12 +313,13 @@
             var xCoord = mapPos.left - position.left;
             var yCoord = mapPos.top - position.top;
 
-            var $nodeDimensions = node.find('.lb-node');
+            var $nodeDimensions = node.find('.lb-node'),
+            	scaleSize = this.scaleSize();
 
             xCoord = this.$el.outerWidth()/2 + xCoord - ($nodeDimensions.outerWidth()/2) - parseInt($nodeDimensions.css('margin-left'));
             yCoord = this.$el.outerHeight()/2 + yCoord - ($nodeDimensions.outerHeight()/2) - parseInt($nodeDimensions.css('margin-top'));
-            
-            return { left : xCoord, top : yCoord };
+
+            return { left : xCoord/scaleSize, top : yCoord/scaleSize };
         },
         centerToNode : function(node) {
         	var coords = this.getNodeCoords(node);
@@ -327,7 +328,7 @@
         /**
          * Select a specific node
          * {node} jQuery object for node
-         * 
+         *
          */
         selectNode : function($node) {
             // de-select previous selection
@@ -344,7 +345,7 @@
             if( $node.data('line') ) {
                 $node.data('line').attr({ 'stroke-width' : this.options.lineWidthSelected });
             }
-            
+
             // trail this node
             this._trailNode($node);
 
@@ -371,7 +372,7 @@
             });
 
             // get the children for the selected node
-            // after the animation has finished           
+            // after the animation has finished
             if( this.options.showChildren ) {
                 clearTimeout(this.getChildrenTimout);
                 this.getChildrenTimout = setTimeout(function() { $collabMap._getChildren($node) }, this.options.moveTime);
@@ -379,14 +380,14 @@
 
             // remove new trail class from nodes
             this.nodes.find('.lb-network-new-trail').removeClass('lb-network-new-trail');
-            
+
             this.options.onSelectNode();
 
         },
         /**
          * de-select a node
          * {$node} jQuery object for node
-         * 
+         *
          */
         deSelectNode : function($node) {
             // de select a node
@@ -397,7 +398,7 @@
         /**
          * trail a node - it's part of the trail we've travelled
          * {$node} jQuery object for node
-         * 
+         *
          */
         _trailNode : function($node) {
             // the "lb-network-new-trail" class allows us to keep already trailed nodes
@@ -411,7 +412,7 @@
         /**
          * de-trail a node - check node and detrail it if necessary
          * {$node} jQuery object for node
-         * 
+         *
          */
         _deTrailNode : function($node) {
 
@@ -424,7 +425,7 @@
 
                 // no timeout no worky :\ find out why!
                 var $collabMap = this;
-                
+
                     if( $node.data('parent') )
                         $collabMap._distFromParent($node, $node.data('distFromParent'));
 
@@ -438,12 +439,12 @@
         /**
          * Add our initial node
          * {id} ( in the future ) add the id of the node we want to stat off with
-         * 
+         *
          */
         _addInitialNode : function() {
             // grab the template it requires
             var template = this;
-            
+
             var url = this.options.jsonURL.replace(/\[\%id\%\]/gi, this.options.initialNodeID);
 
             $.ajax({
@@ -454,7 +455,7 @@
                 },
                 success : ( function(collabMap) { return function(node) {
                     var templatetype = 'default';
-              
+
                     if( node.type && template.options.templates[node.type] )
                         templatetype = node.type;
 
@@ -469,14 +470,14 @@
                                 .data('id', collabMap.options.initialNodeID)
                                 .addClass(collabMap.options.className.node + ' collab-selected')
                                 .css({ position : 'absolute' });
-        
+
                     var centerScreen = collabMap._centerScreen();
                     var centerNode = collabMap._centerPos();
-        
+
                     newNode.addClass(collabMap.options.className.trailing).css({ left : centerScreen[0] + 'px', top : centerScreen[1] + 'px' })
                            .data({ coords : { left : centerScreen[0], top : centerScreen[1] },
                                    children : node.children || [] });
-        
+
                     collabMap._getChildren(newNode);
                 }})(this)
             });
@@ -484,10 +485,10 @@
         /**
          * Remove child nodes
          * {$node} node to lose its children
-         * 
+         *
          */
         _removeChildren : function($node, forced) {
-            
+
             if( typeof(forced) == 'undefined' )
                 forced = false;
 
@@ -515,13 +516,13 @@
                 TMPLT = TMPLT.replace(match, replacement);
                 match = TMPLT.match(newReg)
 
-            }            
+            }
             return TMPLT;
         },
         /**
          * Get node's children
          * {$node} jQuery object for node
-         * 
+         *
          */
         _getChildren : function($node) {
             if( $node.data('id') && (!$node.data('children') || !$node.data('children').length) ) {
@@ -535,7 +536,7 @@
                     },
                     success : ( function(collabMap) { return function(node) {
                         $node.data({ children : node.children });
-                        // once we have the children, set them 
+                        // once we have the children, set them
                         collabMap._setChildren($node);
                     }})(this)
                 })
@@ -547,17 +548,17 @@
         /**
          * Draw node's children
          * {$parent} jQuery object for node
-         * 
+         *
          */
         _setChildren : function($parent) {
             var children = $parent.data('children');
 
             var childNum = children ? children.length : 0;
-            
+
             if( !childNum ) return;
 
             var $container = $parent.find('.children-nodes');
-            
+
             if( !$container.length )
                 $container = $('<div class="children-nodes" />').appendTo($parent).css({ position : 'absolute', left : '50%', top : '50%' });
 
@@ -599,11 +600,9 @@
                 parentPos.top += pos.top;
             }
 
-            var scaling = this.scale();
+            parentPos.left = parentPos.left;
+            parentPos.top = parentPos.top;
 
-            parentPos.left = parentPos.left/scaling;
-            parentPos.top = parentPos.top/scaling;
-            
             var differentiation = this.options.variation;
             var varlk = Math.ceil(children.length/10)+2;
 
@@ -612,7 +611,7 @@
             $.each(children, function(i) {
                 if( !$('#' + nodeId + $parent.data('id') + children[i].uid ).length ) {
                     var templatetype = 'default';
-                    
+
                     if( children[i].type && templates[children[i].type] )
                         templatetype = children[i].type;
 
@@ -667,11 +666,11 @@
          * Vary the distance between a node and its parent
          * {$parent} jQuery object for node
          * {dist} distance between both
-         * 
+         *
          */
         _distFromParent : function($node, dist) {
             if( $node.data('parent') ) {
-            
+
                 if( typeof(dist) == 'undefined' )
                     dist    = this.options.distanceNodes;          // distance between nodes
 
@@ -686,13 +685,13 @@
                 var nWidth  = node.outerWidth()/2;
                 var nHeight = node.outerHeight()/2;
 
-                // parent dimensions                
+                // parent dimensions
                 var parentDimension = $node.data('parent').find('.lb-node');
                 var pWidth  = parentDimension.outerWidth()/2;
                 var pHeight = parentDimension.outerHeight()/2;
 
                 var extraD  = 0;
-                
+
                 var nAngle = Math.atan(nWidth/nHeight); // this is the angle at which we'll find a corner in the node
                     nAngle = Math.round(nAngle * 180/Math.PI);
 
@@ -759,13 +758,13 @@
         /**
          * Draw the line from a node to its parent
          * {$node} jQuery object for node
-         * 
+         *
          */
         _drawLineToParent : function($node) {
             if( $node.data('parent') ) {
                 var parent = $node.data('parent');
                 var parentPos = parent.position();
-                
+
                 while( parent.data('parent') ) {
                     parent = parent.data('parent');
                     var pos = parent.position();
@@ -774,10 +773,8 @@
                     parentPos.top += pos.top;
                 }
 
-                var scaling = this.scale();
-
-                parentPos.left = parentPos.left/scaling;
-                parentPos.top = parentPos.top/scaling;
+                parentPos.left = parentPos.left;
+                parentPos.top = parentPos.top;
 
                 var nodeCoords = $node.data('coords');
 
@@ -789,13 +786,13 @@
                 if( this.raphael && $node.data('line') )
                     $node.data('line').animate({ path : pathCoords }, this.options.moveTime*0.5, lineDrawEasing);
             }
-            
+
         },
         /**
-         * Zoom in and out - by keeping the sizes in EM we can do this by 
+         * Zoom in and out - by keeping the sizes in EM we can do this by
          * incrementing the font size of the container
          * {direction} string : 'in' or 'out'
-         * 
+         *
          */
         zoom : function(direction, coords) {
             var fontSize = parseFloat(this.$el.css('font-size'));
@@ -805,7 +802,7 @@
 
             if( typeof coords == 'undefined' )
                 coords = [this.map.position().left, this.map.position().top];
-                
+
 
             if( typeof(direction) != 'undefined' && direction == 'in' ) {
                 if( this.zoomLevel >= this.maxZoom )
@@ -819,7 +816,7 @@
                 zoom = false;
             } else {
                 this.zoomLevel--;
-            }               
+            }
 
             if( typeof(coords) != 'undefined' && coords.length > 1 ) {
                 // this.mapToCoords(coords[0], coords[1])
@@ -829,7 +826,7 @@
                 this.lines.transition({ scale : dir*this.scaleSize() });
                 this.nodes.transition({ scale : dir*this.scaleSize() });
             }
-            
+
 
 // for IE            this.nodes.animate({ zoom : 2 });
         },
@@ -862,7 +859,7 @@
         /**
          * Get the center coords of the map
          * returns [xcoord, ycoord]
-         * 
+         *
          */
         _centerPos : function() {
             var centerY = (this.map.height()/2);
@@ -873,7 +870,7 @@
          * Get the left, top position of the map so that its center
          * is at the center of the container
          * returns [left, top]
-         * 
+         *
          */
         _centerScreen : function() {
             var top = (this.map.height()/2) + (this.$el.height()/2);
@@ -883,7 +880,7 @@
         /**
          * Get the coordinates of the position currently at the center of the map
          * returns { left : xCoord, top : yCoord }
-         * 
+         *
          */
         _currentCenterPos : function() {
             var offset = this.map.position();
@@ -904,13 +901,13 @@
                 offset = currentElement.position();
                 totalOffsetX += offset.left;
                 totalOffsetY += offset.top;
-                
+
                 currentElement = currentElement.parent();
             }
-            
+
             canvasX = event.pageX - totalOffsetX;
             canvasY = event.pageY - totalOffsetY;
-            
+
             return { x : canvasX, y : canvasY }
         }
     }
