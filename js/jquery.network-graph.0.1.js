@@ -845,7 +845,7 @@
             var distanceToTravel = dy / ( Math.sin(Math.atan(dy/dx)) );
             // that's enough trigonometry for today
 
-            var speed = Math.floor((distanceToTravel/260) * 600);
+            speed = Math.min(Math.floor((distanceToTravel/260) * 600), 3000);
 
             var mapMoveEasing = $.easing['easeInOutQuint'] ? 'easeInOutQuint' : 'linear';
             var collabMap = this;

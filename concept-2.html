@@ -194,7 +194,12 @@
             	var $wheel = $('.wheel-background');
             	var option = $wheel.data('selected-option');
 
-	            $('#network area[href="#' + option + '"]').mousedown();
+            	if( $('.collab-fit.selected').length ) {
+            		$('.collab-fit-back').click();
+            		setTimeout(function() { $('#network area[href="#' + option + '"]').mousedown(); }, 600);
+            	} else {
+	            	$('#network area[href="#' + option + '"]').mousedown();
+            	}
             });
 
             $('.facebook').click(function(e) {
