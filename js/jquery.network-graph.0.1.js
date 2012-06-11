@@ -764,21 +764,17 @@
          */
         _drawLineToParent : function($node) {
             if( $node.data('parent') ) {
-                var parent = $node.data('parent');
-                var parentPos = parent.position();
+                var parent 	   = $node.data('parent'),
+                	parentPos  = parent.offset(),
+                	mapPos	   = this.map.position(),
+                	nodeCoords = $node.data('coords'),
+                	scaleSize  = this.scaleSize();
 
-                while( parent.data('parent') ) {
-                    parent = parent.data('parent');
-                    var pos = parent.position();
+                parentPos.left = parentPos.left - mapPos.left;
+                parentPos.top  = parentPos.top - mapPos.top;
 
-                    parentPos.left += pos.left;
-                    parentPos.top += pos.top;
-                }
-
-                parentPos.left = parentPos.left;
-                parentPos.top = parentPos.top;
-
-                var nodeCoords = $node.data('coords');
+                nodeCoords.left = nodeCoords.left * scaleSize;
+                nodeCoords.top = nodeCoords.top * scaleSize;
 
                 var pathCoords = 'M' + parentPos.left + ' ' + parentPos.top +
                                  'L' + (parentPos.left + nodeCoords.left) + ' ' + (parentPos.top + nodeCoords.top);
