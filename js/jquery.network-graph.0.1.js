@@ -777,21 +777,14 @@
          *
          */
         zoom : function(direction, coords) {
-            var fontSize = parseFloat(this.$el.css('font-size'));
-
             var dir = this.zoomRatio;
             var zoom = true;
-
-            if( typeof coords == 'undefined' )
-                coords = [this.map.position().left, this.map.position().top];
-
 
             if( typeof(direction) != 'undefined' && direction == 'in' ) {
                 if( this.zoomLevel >= this.maxZoom )
                     zoom = false;
-                else {
+                else
                     this.zoomLevel++;
-                }
 
                 dir = 1/dir;
             } else if( this.zoomLevel <= this.minZoom ) {
@@ -800,13 +793,23 @@
                 this.zoomLevel--;
             }
 
-            if( typeof(coords) != 'undefined' && coords.length > 1 ) {
-                // this.mapToCoords(coords[0], coords[1])
-            }
-
             if( zoom ) {
-                this.lines.transition({ scale : dir*this.scaleSize() });
-                this.nodes.transition({ scale : dir*this.scaleSize() });
+	            if( typeof coords == 'undefined' ) {
+		            // grab the final coordinates of where we should end up
+		            var centerX = ( this.map.position().left * dir ) + this.$el.width()/2,
+		            	centerY = ( this.map.position().top  * dir ) + this.$el.height()/2;
+	            }
+
+	            // scale to fit
+	            var coords  = this.map.offset(),
+	            	xCoords = centerX - coords.left,
+	            	yCoords = centerY - coords.top;
+
+				this.map.transition({ x : xCoords, y : yCoords, scale : dir*this.scaleSize(), duration : 400,
+							complete: function() {
+								$(this).css({ left : centerX, top : centerY, x : 0, y : 0 });
+							}
+						});
             }
 
 
