@@ -553,9 +553,8 @@
          *
          */
         _setChildren : function($parent) {
-            var children = $parent.data('children');
-
-            var childNum = children ? children.length : 0;
+            var children = $parent.data('children'),
+            	childNum = children ? children.length : 0;
 
             if( !childNum ) return;
 
@@ -564,35 +563,25 @@
             if( !$container.length )
                 $container = $('<div class="children-nodes" />').appendTo($parent).css({ position : 'absolute', left : '50%', top : '50%' });
 
-            var paper      = this.paper;
+            var paper	  	= this.paper,
+            	parentPos 	= $parent.data('coords'),
+            	nodeId 	 	= this.options.nodeId,
+            	angle   	= this.options.startAngle ? this.options.startAngle : Math.floor(Math.random()*360), // start angle for rotation
+            	angleLimit	= $parent.data('parent') ? this.options.angleLimit : 360,	// this is the max angle the childnodes can cover
+            	aInc 		= angleLimit/childNum, // angle between each element
+            	templates 	= this.options.templates,
+            	$collabMap 	= this,
+            	parent 		= $parent,
+            	parentPos 	= parent.position(),
+            	scaleSize  = this.scaleSize();;
 
-            var parentPos = $parent.data('coords');
-            var nodeId = this.options.nodeId;
-
-            var angle   = this.options.startAngle ? this.options.startAngle : Math.floor(Math.random()*360); // start angle for rotation
-
-            if( $parent.data('parent') ) {
-                childNum++;
-            }
-
-            var angleLimit = $parent.data('parent') ? this.options.angleLimit : 360;
-            var aInc = angleLimit/childNum; // angle between each element
-
-            if( $parent.data('parent') ) {
+            if( $parent.data('parent') )
                 angle = $parent.data('angleFromParent');
-            }
 
             if( childNum > 2 )
                 angle -= Math.floor((aInc*(childNum-1))/2);
             else
                 angle += (30-(Math.random()*60));
-
-            var templates = this.options.templates;
-
-            var $collabMap = this;
-
-            var parent = $parent;
-            var parentPos = parent.position();
 
             while( parent.data('parent') ) {
                 parent = parent.data('parent');
@@ -602,24 +591,19 @@
                 parentPos.top += pos.top;
             }
 
-            parentPos.left = parentPos.left;
-            parentPos.top = parentPos.top;
+            parentPos.left = parentPos.left / scaleSize;
+            parentPos.top = parentPos.top / scaleSize;
 
-            var differentiation = this.options.variation;
-            var varlk = Math.ceil(children.length/10)+2;
-
-            var piFreq = Math.PI/2;
+            var differentiation = this.options.variation,
+            	varlk = Math.ceil(children.length/10)+2,
+            	piFreq = Math.PI/2;
 
             $.each(children, function(i) {
                 if( !$('#' + nodeId + $parent.data('id') + children[i].uid ).length ) {
-                    var templatetype = 'default';
 
-                    if( children[i].type && templates[children[i].type] )
-                        templatetype = children[i].type;
-
-                    var TMPLT = templates[templatetype];
-
-                    var $node = $('<div></div>')
+                    var templatetype = ( children[i].type && templates[children[i].type] ) ? templatetype = children[i].type : 'default',
+                    	TMPLT = templates[templatetype],
+                    	$node = $('<div></div>')
                                 .append($($collabMap._replace(TMPLT, children[i])).addClass('lb-node'))
                                 .appendTo($container)
                                 .addClass($collabMap.options.className.node)
@@ -673,13 +657,13 @@
         _distFromParent : function($node, dist) {
             if( $node.data('parent') ) {
 
+                var rad     = Math.PI/180,  // variable to convert angles to radians for trigonometry
+                	childX  = childY = 0,
+                	scaleSize  = this.scaleSize()
+                	angle = $node.data('angleFromParent');
+
                 if( typeof(dist) == 'undefined' )
-                    dist    = this.options.distanceNodes;          // distance between nodes
-
-                var rad     = Math.PI/180;  // variable to convert angles to radians for trigonometry
-                var childX = childY = 0;
-
-                var angle = $node.data('angleFromParent');
+                    dist    = this.options.distanceNodes * scaleSize;          // distance between nodes
 
                 // since the nodes' heights and widths vary,
                 // lets make the distance the same from the border of the node
