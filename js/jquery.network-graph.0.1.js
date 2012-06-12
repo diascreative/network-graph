@@ -770,11 +770,11 @@
                 	nodeCoords = $node.data('coords'),
                 	scaleSize  = this.scaleSize();
 
-                parentPos.left = parentPos.left - mapPos.left;
-                parentPos.top  = parentPos.top - mapPos.top;
+                parentPos.left = ( parentPos.left - mapPos.left )  / scaleSize;
+                parentPos.top  = ( parentPos.top - mapPos.top ) / scaleSize;
 
-                nodeCoords.left = nodeCoords.left * scaleSize;
-                nodeCoords.top = nodeCoords.top * scaleSize;
+                nodeCoords.left = nodeCoords.left;
+                nodeCoords.top = nodeCoords.top;
 
                 var pathCoords = 'M' + parentPos.left + ' ' + parentPos.top +
                                  'L' + (parentPos.left + nodeCoords.left) + ' ' + (parentPos.top + nodeCoords.top);
